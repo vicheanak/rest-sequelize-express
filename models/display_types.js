@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: function(models) {
-        DISPLAY_TYPES.hasMany(model.DISPLAYS);
+        DISPLAY_TYPES.hasMany(models.DISPLAYS);
       }
     }
   });

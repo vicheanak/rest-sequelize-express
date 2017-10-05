@@ -2,9 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   var REWARDS = sequelize.define('REWARDS', {
     name: DataTypes.STRING,
-    point: DataTypes.INTEGER,
+    points: DataTypes.INTEGER,
     imageUrl: DataTypes.STRING,
-    status: DataTypes.BOOEAN
+    status: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {

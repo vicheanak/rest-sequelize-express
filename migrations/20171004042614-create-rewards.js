@@ -11,7 +11,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      point: {
+      points: {
         type: Sequelize.INTEGER
       },
       imageUrl: {

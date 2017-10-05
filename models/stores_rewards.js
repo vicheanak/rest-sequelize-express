@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var STORES_REWARDS = sequelize.define('STORES_REWARDS', {
-    status: DataTypes.INTEGER
+    status: DataTypes.INTEGER,
     imageUrl: DataTypes.STRING
   }, {
     classMethods: {

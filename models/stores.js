@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false 
           }
         });
-        STORES.hasMany(model.STORE_POINTS);
-        STORES.hasMany(model.STORES_REWARDS);
-        STORES.hasMany(model.USERS_STORES);
+        STORES.hasMany(models.STORE_POINTS);
+        STORES.hasMany(models.STORES_REWARDS);
+        STORES.hasMany(models.USERS_STORES);
       }
     }
   });

@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
           }
         });
-        DISPLAYS.hasMany(model.STORE_POINTS);
+        DISPLAYS.hasMany(models.STORE_POINTS);
       }
     }
   });

@@ -1,10 +1,8 @@
-var models  = require('../models');
 var express = require('express');
-var users = require('../controllers/users');
 var router  = express.Router();
 
-router.get('/', users.all);
-
-
+router.get('/', (req, res) => {
+  return res.jsonp({0: 'You are all good'});
+});
 
 module.exports = router;
