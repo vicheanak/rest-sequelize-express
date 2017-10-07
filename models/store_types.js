@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: function(models) {
-        STORE_TYPES.hasMany(models.STORES);
+        STORE_TYPES.hasMany(models.STORES, {foreignKey: 'storeTypeIdStores'});
         STORE_TYPES.hasMany(models.DISPLAYS);
       }
     }

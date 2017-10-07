@@ -10,9 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         STORES.belongsTo(models.STORE_TYPES, {
-          foreignKey: {
-            allowNull: false 
-          }
+          foreignKey: 'storeTypeIdStores'
         });
         STORES.hasMany(models.STORE_POINTS);
         STORES.hasMany(models.STORES_REWARDS);
