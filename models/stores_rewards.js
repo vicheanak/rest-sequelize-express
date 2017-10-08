@@ -7,14 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         STORES_REWARDS.belongsTo(models.STORES, {
-          foreignKey: {
-            allowNull: false 
-          }
+          foreignKey: 'storeIdStoresRewards'
         });
         STORES_REWARDS.belongsTo(models.REWARDS, {
-          foreignKey: {
-            allowNull: false 
-          }
+          foreignKey: 'rewardIdStoresRewards'
         });
       }
     }

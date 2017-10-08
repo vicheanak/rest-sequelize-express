@@ -12,9 +12,15 @@ module.exports = (sequelize, DataTypes) => {
         STORES.belongsTo(models.STORE_TYPES, {
           foreignKey: 'storeTypeIdStores'
         });
-        STORES.hasMany(models.STORE_POINTS);
-        STORES.hasMany(models.STORES_REWARDS);
-        STORES.hasMany(models.USERS_STORES);
+        STORES.hasMany(models.STORE_POINTS, {
+          foreignKey: 'storeIdStorePoints'
+        });
+        STORES.hasMany(models.STORES_REWARDS, {
+          foreignKey: 'storeIdStoresRewards'
+        });
+        STORES.hasMany(models.USERS_STORES, {
+          foreignKey: 'storeIdUsersStores'
+        });
       }
     }
   });

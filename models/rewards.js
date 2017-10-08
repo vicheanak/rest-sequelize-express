@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: function(models) {
-        REWARDS.hasMany(models.STORES_REWARDS);
+        REWARDS.hasMany(models.STORES_REWARDS, {
+          foreignKey: 'rewardIdStoresRewards'
+        });
       }
     }
   });

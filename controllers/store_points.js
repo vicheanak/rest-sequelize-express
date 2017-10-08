@@ -1,4 +1,9 @@
 var models  = require('../models');
+var fs = require('fs');
+var appRoot = require('app-root-path');
+var uuid = require('uuid/v4');
+var sharp = require('sharp');
+var multer = require('multer');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -35,11 +40,38 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-  models.STORE_POINTS.create({
-    name: req.body.name
-  }).then(function(result) {
-    return res.jsonp(result);
+  var fileUuid = uuid();
+  var base64Data = req.body.imageUrl;
+  var filePath = "/public/uploads/"+fileUuid+".png";
+  fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
+    if (err) console.log(err);
+    sharp(appRoot+filePath)
+      .resize(500)
+      .toBuffer()
+      .then((data) =>{
+        fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
+          models.STORE_POINTS.create({
+            points: req.body.name,
+            imageUrl: req.header.host + filePath,
+            storeIdStorePoints: req.body.storeIdStorePoints,
+            userIdStorePoints: req.body.userIdStorePoints,
+            displayIdStorePoints: req.body.displayIdStorePoints
+          }).then(function(result) {
+            return res.jsonp(result);
+          });
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+
+
+    //fs.readFile(appRoot + filePath, function(err, data) {
+      //if (err) throw err;
+      //res.send(data);
+    //});
   });
+
 };
 
 exports.update = function(req, res) {

@@ -47,7 +47,6 @@ exports.create = function(req, res) {
   var filePath = "/public/uploads/"+fileUuid+".png";
   fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
     if (err) console.log(err);
-
     sharp(appRoot+filePath)
       .resize(500)
       .toBuffer()
@@ -72,7 +71,6 @@ exports.create = function(req, res) {
       //res.send(data);
     //});
   });
-
 };
 
 exports.update = function(req, res) {

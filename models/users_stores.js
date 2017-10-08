@@ -7,14 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         USERS_STORES.belongsTo(models.USERS, {
-          foreignKey: {
-            allowNull: false 
-          }
+          foreignKey: 'userIdUsersStores'
         });
         USERS_STORES.belongsTo(models.STORES, {
-          foreignKey: {
-            allowNull: false 
-          }
+          foreignKey: 'storeIdUsersStores'
         });
       }
     }

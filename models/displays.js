@@ -9,16 +9,14 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         DISPLAYS.belongsTo(models.DISPLAY_TYPES, {
-          foreignKey: {
-            allowNull: false
-          }
+          foreignKey: 'displayTypeIdDisplays'
         });
         DISPLAYS.belongsTo(models.STORE_TYPES, {
-          foreignKey: {
-            allowNull: false
-          }
+          foreignKey: 'storeTypeIdDisplays'
         });
-        DISPLAYS.hasMany(models.STORE_POINTS);
+        DISPLAYS.hasMany(models.STORE_POINTS, {
+          foreignKey: 'displayIdStorePoints'
+        });
       }
     }
   });

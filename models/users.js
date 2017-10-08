@@ -18,8 +18,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: function(models) {
-        USERS.hasMany(models.STORE_POINTS);
-        USERS.hasMany(models.USERS_STORES);
+        USERS.hasMany(models.STORE_POINTS, {
+          foreignKey: 'userIdStorePoints'
+        });
+        USERS.hasMany(models.USERS_STORES, {
+          foreignKey: 'userIdUsersStores'
+        });
       }
     },
     instanceMethods: {
