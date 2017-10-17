@@ -2,14 +2,16 @@ var models  = require('../models');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
-  page = page--;
+  page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
+  console.log(perPage);
   models.STORE_TYPES.findAndCountAll({
     offset: page,
     limit: perPage,
     orderBy: [
       ['id', 'DESC']
-    ]
+    ],
+     duplicating: false
   }).then(function(rec) {
     var routePath = req.route.path;
     var pageCount = Math.ceil(rec.count / perPage)
@@ -36,7 +38,8 @@ exports.all = (req, res) => {
 
 exports.create = function(req, res) {
   models.STORE_TYPES.create({
-    name: req.body.name
+    name: req.body.name,
+    status: req.body.status
   }).then(function(result) {
     return res.jsonp(result);
   });
@@ -44,7 +47,8 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
   models.STORE_TYPES.update({
-    name: req.body.name
+    name: req.body.name,
+    status: req.body.status
   },{
     where: {
       id: req.params.id

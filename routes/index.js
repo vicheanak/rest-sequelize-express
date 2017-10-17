@@ -16,49 +16,77 @@ router.get('/', (req, res) => {
   return res.jsonp({0: 'You are all good'});
 });
 
-router.get('/display_types', displayTypes.all);
-router.get('/display_types/:id', displayTypes.get);
-router.post('/display_types', displayTypes.create);
-router.put('/display_types/:id', displayTypes.update);
+router.get('/display_types', cors(), displayTypes.all);
+router.get('/display_types/:id', cors(), displayTypes.get);
+router.post('/display_types', cors(), displayTypes.create);
+router.put('/display_types/:id', cors(), displayTypes.update);
 
-router.get('/displays', displays.all);
-router.get('/displays/:id', displays.get);
-router.post('/displays', displays.create);
-router.put('/displays/:id', displays.update);
+router.get('/displays', cors(), displays.all);
+router.get('/displays/:id', cors(), displays.get);
+router.post('/displays', cors(), displays.create);
+router.put('/displays/:id', cors(), displays.update);
 
 router.get('/rewards', cors(), rewards.all);
 router.get('/rewards/:id', cors(), rewards.get);
 router.post('/rewards', cors(), rewards.create);
 router.put('/rewards/:id', cors(), rewards.update);
 
-router.get('/store_points', storePoints.all);
-router.get('/store_points/:id', storePoints.get);
-router.post('/store_points', storePoints.create);
-router.put('/store_points/:id', storePoints.update);
+router.get('/store_points', cors(), storePoints.all);
+router.get('/store_points/:id', cors(), storePoints.get);
+router.post('/store_points', cors(), storePoints.create);
+router.put('/store_points/:id', cors(), storePoints.update);
 
-router.get('/stores_rewards', storesRewards.all);
-router.get('/stores_rewards/:id', storesRewards.get);
-router.post('/stores_rewards', storesRewards.create);
-router.put('/stores_rewards/:id', storesRewards.update);
+router.get('/stores_rewards', cors(), storesRewards.all);
+router.get('/stores_rewards/:id', cors(), storesRewards.get);
+router.post('/stores_rewards', cors(), storesRewards.create);
+router.put('/stores_rewards/:id', cors(), storesRewards.update);
 
-router.get('/store_types', storeTypes.all);
-router.get('/store_types/:id', storeTypes.get);
-router.post('/store_types', storeTypes.create);
-router.put('/store_types/:id', storeTypes.update);
+router.get('/store_types', cors(), storeTypes.all);
+router.get('/store_types/:id', cors(), storeTypes.get);
+router.post('/store_types', cors(), storeTypes.create);
+router.put('/store_types/:id', cors(), storeTypes.update);
 
-router.get('/stores', stores.all);
-router.get('/stores/:id', stores.get);
-router.post('/stores', stores.create);
-router.put('/stores/:id', stores.update);
+router.get('/stores', cors(), stores.all);
+router.get('/stores/:id', cors(), stores.get);
+router.post('/stores', cors(), stores.create);
+router.put('/stores/:id', cors(), stores.update);
 
-router.get('/users', users.all);
-router.get('/users/:id', users.get);
-router.post('/users', users.create);
-router.put('/users/:id', users.update);
+router.get('/is_store/:token', cors(), stores.isStore);
+router.put('/auth_store', cors(), stores.auth_store);
 
-router.get('/users_stores', usersStores.all);
-router.get('/users_stores/:id', usersStores.get);
-router.post('/users_stores', usersStores.create);
-router.put('/users_stores/:id', usersStores.update);
+router.get('/users', cors(), users.all);
+router.get('/users/:id', cors(), users.get);
+router.post('/users', cors(), users.create);
+router.put('/users/:id', cors(), users.update);
+
+router.get('/admins', cors(), users.all);
+router.get('/admins/:id', cors(), users.get);
+router.post('/admins', cors(), users.create);
+router.put('/admins/:id', cors(), users.update);
+
+router.get('/viewers', cors(), users.all);
+router.get('/viewers/:id', cors(), users.get);
+router.post('/viewers', cors(), users.create);
+router.put('/viewers/:id', cors(), users.update);
+
+router.get('/auditors', cors(), users.all);
+router.get('/auditors/:id', cors(), users.get);
+router.post('/auditors', cors(), users.create);
+router.put('/auditors/:id', cors(), users.update);
+
+router.put('/logout', cors(), users.logout);
+router.get('/is_auth/:token', cors(), users.isAuth);
+router.get('/is_admin/:token', cors(), users.isAdmin);
+router.get('/is_viewer/:token', cors(), users.isViewer);
+router.get('/is_auditor/:token', cors(), users.isAuditor);
+
+router.put('/auth', cors(), users.authenticate);
+router.put('/auth_auditor', cors(), users.authAuditor);
+
+router.get('/users_stores', cors(), usersStores.all);
+router.get('/users_stores/:id', cors(), usersStores.get);
+router.post('/users_stores', cors(), usersStores.create);
+router.put('/users_stores/:id', cors(), usersStores.update);
+
 
 module.exports = router;

@@ -1,8 +1,12 @@
 var models  = require('../models');
+var bcrypt = require('bcrypt');
+var jwt  = require('jwt-simple');
+var uuid = require('uuid');
+var secret = require('../config/secret');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
-  page = page--;
+  page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
   models.STORES.findAndCountAll({
     include: [
@@ -41,10 +45,25 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-  models.STORES.create({
-    name: req.body.name
-  }).then(function(result) {
-    return res.jsonp(result);
+
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(req.body.password, salt, function (err, hash) {
+      req.body.password = hash;
+      var token = jwt.encode(uuid.v4(), secret);
+      req.body.token = token;
+      models.STORES.create({
+        name: req.body.name,
+        location: req.body.location,
+        phone: req.body.phone,
+        status: req.body.status,
+        username: req.body.username,
+        password: req.body.password,
+        token: req.body.token
+      }).then(function(result) {
+        console.log(result.id);
+        return res.jsonp(result);
+      });
+    });
   });
 };
 

@@ -17,7 +17,13 @@ module.exports = {
       phone: {
         type: Sequelize.STRING
       },
-      note: {
+      username: {
+        type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING
+      },
+      token: {
         type: Sequelize.STRING
       },
       status: {

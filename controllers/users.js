@@ -1,9 +1,12 @@
 var models  = require('../models');
-
+var bcrypt = require('bcrypt');
+var jwt  = require('jwt-simple');
+var uuid = require('uuid');
+var secret = require('../config/secret');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
-  page = page--;
+  page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
   models.USERS.findAndCountAll({
     offset: page,
@@ -136,7 +139,6 @@ exports.isAdmin = function(req, res, next){
       role: 'admin'
     }
   }).then(function(user){
-    console.log('IS ADMIN ---> ', user);
     if (user){
       user.verifyToken(token, function(isMatch){
         if (isMatch){
@@ -219,31 +221,130 @@ exports.islogin = function(req, res){
   })
 }
 
+exports.logout = function(req,res){
+
+  var token = req.body.token;
+
+  models.USERS.update({
+    token: ''
+  },{
+    where: {
+      token: token
+    }
+  }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
+exports.isAuth = function(req,res){
+  console.log('req params, ', req.params.token);
+  models.USERS.findOne({
+    where: {
+      token: req.params.token,
+      $or: [{role: 1}, {role:2}],
+      status: true
+    }
+  }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
+exports.isAdmin = function(req,res){
+  console.log('req params, ', req.params.token);
+  models.USERS.findOne({
+    where: {
+      token: req.params.token,
+      role: 1,
+      status: true
+    }
+  }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
+exports.isViewer = function(req,res){
+  console.log('req params, ', req.params.token);
+  models.USERS.findOne({
+    where: {
+      token: req.params.token,
+      role: 2,
+      status: true
+    }
+  }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
+exports.isAuditor = function(req,res){
+  console.log('req params, ', req.params.token);
+  models.USERS.findOne({
+    where: {
+      token: req.params.token,
+      role: 3,
+      status: true
+    }
+  }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
 exports.authenticate = function(req,res){
-  db.User.findOne({
+  console.log(req.body.username);
+  models.USERS.findOne({
     where: {
       username: req.body.username,
-      $or: [{role: 'admin'}, {role: 'viewer'}],
-      active: true
+      $or: [{role: 1}, {role: 2}],
+      status: true
     }
   }).then(function(user){
     if (user){
       user.verifyPassword(req.body.password, function(err, isMatch){
+        console.log('isMatch');
+        console.log(isMatch);
         if (isMatch){
           user.updateAttributes({
             token: jwt.encode(uuid.v4(), secret)
           }).then(function(a){
-            console.log(a);
             res.jsonp(user);
           });
         }
         else{
-          res.jsonp({err: 'wrong password'});
+          res.jsonp({err: "Incorrect Password"});
         }
       })
     }
     else{
-      return res.jsonp({err: 'user not exist'});
+      return res.jsonp({err: "Username does Not Exist or Inactive"});
+    }
+  })
+}
+exports.authAuditor = function(req,res){
+  console.log(req.body.username);
+  models.USERS.findOne({
+    where: {
+      username: req.body.username,
+      role: 3,
+      status: true
+    }
+  }).then(function(user){
+    if (user){
+      user.verifyPassword(req.body.password, function(err, isMatch){
+        console.log('isMatchAuditor');
+        console.log(isMatch);
+        if (isMatch){
+          user.updateAttributes({
+            token: jwt.encode(uuid.v4(), secret)
+          }).then(function(a){
+            res.jsonp(user);
+          });
+        }
+        else{
+          res.jsonp({err: "Incorrect Password"});
+        }
+      })
+    }
+    else{
+      return res.jsonp({err: "Username does Not Exist or Inactive"});
     }
   })
 }
@@ -280,7 +381,6 @@ exports.mobileAuthenticate = function(req,res){
  * Find user by id
  */
 exports.user = function(req, res, next, id) {
-  console.log('CALLED USER ======> ', id);
   db.User.find({where : { id: id }}).then(function(user){
     if (!user) {
       return next(new Error('Failed to load User ' + id));

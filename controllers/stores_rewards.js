@@ -2,7 +2,7 @@ var models  = require('../models');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
-  page = page--;
+  page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
   models.STORES_REWARDS.findAndCountAll({
     offset: page,
