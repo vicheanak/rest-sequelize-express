@@ -8,13 +8,35 @@ exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
   page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
-  models.USERS.findAndCountAll({
+
+  var routePath = req.route.path;
+  console.log('ROUTE PATH ======>', routePath);
+  if (routePath == '/admins'){
+    req.body.role = 1;
+  }
+  if (routePath == '/viewers'){
+    req.body.role = 2;
+  }
+  if (routePath == '/auditors'){
+    req.body.role = 3;
+  }
+
+  var query = {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
-    ]
-  }).then(function(rec) {
+    ['id', 'DESC']
+    ],
+    where: {
+      role: req.body.role
+    }
+  }
+
+  if (req.query.status){
+    query.where.status = true;
+  }
+
+  models.USERS.findAndCountAll(query).then(function(rec) {
     var routePath = req.route.path;
     var pageCount = Math.ceil(rec.count / perPage)
     var result = {
@@ -24,11 +46,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows
@@ -39,13 +61,23 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
+  var routePath = req.route.path;
+  if (routePath == '/admins'){
+    req.body.role = 1;
+  }
+  if (routePath == '/viewers'){
+    req.body.role = 2;
+  }
+  if (routePath == '/auditors'){
+    req.body.role = 3;
+  }
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(req.body.password, salt, function (err, hash) {
       req.body.password = hash;
       var token = jwt.encode(uuid.v4(), secret);
       req.body.token = token;
       models.USERS.create({
-        fullname: req.body.name,
+        fullname: req.body.fullname,
         username:req.body.username,
         password:req.body.password,
         phone: req.body.phone,
@@ -53,30 +85,113 @@ exports.create = function(req, res) {
         role: req.body.role,
         status: req.body.status
       }).then(function(user){
-        res.jsonp(user);
+        if (req.body.storeIds){
+          var usersStores = [];
+          for (var i = 0; i < req.body.storeIds.length; i ++){
+            usersStores.push({
+              userIdUsersStores: user.id,
+              storeIdUsersStores: req.body.storeIds[i]
+            });
+          }
+          models.USERS_STORES.bulkCreate(usersStores).then(() => {
+            return res.jsonp(user);
+          });
+        }
+        else{
+          res.jsonp(user);
+        }
       });
     });
   });
 };
 
 exports.update = function(req, res) {
-  models.USERS.update({
-    name: req.body.name
-  },{
-    where: {
-      id: req.params.id
-    }
-  }).then(function(result) {
-    return res.jsonp(result);
+  var data = {
+    fullname: req.body.fullname,
+    phone: req.body.phone,
+    status: req.body.status
+  };
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(req.body.password, salt, function (err, hash) {
+      if (req.body.password){
+        data.password = hash;
+      }
+      console.log('data ====> ', data);
+      models.USERS.update(
+        data
+        ,{
+          where: {
+            id: req.params.id
+          }
+        }).then(function(user) {
+          var routePath = req.route.path;
+          console.log('user ===> ', routePath);
+          var role = '';
+          if (routePath == '/admins/:id'){
+            role = 'admin';
+          }
+          if (routePath == '/viewers/:id'){
+            role = 'viewers';
+          }
+          if (routePath == '/auditors/:id'){
+            role = 'auditors';
+          }
+          if (role == 'auditors'){
+            var usersStores = [];
+            for (var i = 0; i < req.body.storeIds.length; i ++){
+              usersStores.push({
+                userIdUsersStores: req.params.id,
+                storeIdUsersStores: req.body.storeIds[i]
+              });
+            }
+            models.USERS_STORES.destroy({
+              where: {
+                userIdUsersStores: req.params.id
+              }
+            }).then(function(updatedData){
+              models.USERS_STORES.bulkCreate(usersStores).then(() => {
+                return res.jsonp(user);
+              });
+            });
+          }
+          else{
+            return res.jsonp(user);
+          }
+        });
+      });
   });
+
+
 };
 
 exports.get = function(req, res) {
+  var routePath = req.route.path;
+  console.log('route path', routePath);
+  if (routePath == '/admins/:id'){
+    req.body.role = 1;
+  }
+  if (routePath == '/viewers/:id'){
+    req.body.role = 2;
+  }
+  if (routePath == '/auditors/:id'){
+    req.body.role = 3;
+  }
+
   models.USERS.find({
+    include: [{
+      model: models.USERS_STORES,
+      attributes: ['storeIdUsersStores']
+    }],
     where: {
-      id: req.params.id
+      id: req.params.id,
+      role: req.body.role
     }
   }).then(function(result) {
+    var storeIds = []
+    for (var i = 0; i < result.USERS_STOREs.length; i ++){
+      storeIds.push(result.USERS_STOREs[i].storeIdUsersStores);
+    }
+    result.storeIds = storeIds;
     return res.jsonp(result);
   });
 }
@@ -153,6 +268,44 @@ exports.isAdmin = function(req, res, next){
       return res.jsonp({success: false, err: 'User is not admin'});
     }
   })
+}
+
+exports.requiredAdmin = function(req, res, next){
+  var token = req.get('token');
+  console.log('TOKEN ##########', token);
+
+  models.USERS.find({
+    where: {
+      token: token,
+      role: 1,
+      status: true
+    }
+  }).then(function(result) {
+    if (result){
+      next();
+    }
+    else{
+      return res.jsonp({err: 'Permission Denied'});
+    }
+  });
+}
+
+exports.requiredLogin = function(req, res, next){
+  var token = req.get('token');
+
+  models.USERS.find({
+    where: {
+      token: token,
+      status: true
+    }
+  }).then(function(result) {
+    if (result){
+      next();
+    }
+    else{
+      return res.jsonp({err: 'Permission Denied'});
+    }
+  });
 }
 
 exports.createSp = function(req, res, next){
@@ -380,7 +533,7 @@ exports.mobileAuthenticate = function(req,res){
 /**
  * Find user by id
  */
-exports.user = function(req, res, next, id) {
+ exports.user = function(req, res, next, id) {
   db.User.find({where : { id: id }}).then(function(user){
     if (!user) {
       return next(new Error('Failed to load User ' + id));
@@ -395,7 +548,7 @@ exports.user = function(req, res, next, id) {
 /**
  * Generic require login routing middleware
  */
-exports.requiresLogin = function(req, res, next) {
+ exports.requiresLogin = function(req, res, next) {
   if (!req.isAuthenticated()) {
     return res.status(401).send('User is not authorized');
   }
@@ -405,7 +558,7 @@ exports.requiresLogin = function(req, res, next) {
 /**
  * User authorizations routing middleware
  */
-exports.hasAuthorization = function(req, res, next) {
+ exports.hasAuthorization = function(req, res, next) {
   if (req.profile.id !== req.user.id) {
     return res.status(401).send('User is not authorized');
   }

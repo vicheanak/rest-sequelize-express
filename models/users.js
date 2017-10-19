@@ -24,6 +24,12 @@ module.exports = (sequelize, DataTypes) => {
         USERS.hasMany(models.USERS_STORES, {
           foreignKey: 'userIdUsersStores'
         });
+
+        USERS.belongsToMany(models.STORES, {
+          as: 'STORES',
+          through: models.USERS_STORES,
+          foreignKey: 'userIdUsersStores'
+        });
       }
     },
     instanceMethods: {

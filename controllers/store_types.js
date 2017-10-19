@@ -5,14 +5,21 @@ exports.all = (req, res) => {
   page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
   console.log(perPage);
-  models.STORE_TYPES.findAndCountAll({
+
+  var query = {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
-    ],
-     duplicating: false
-  }).then(function(rec) {
+    ['id', 'DESC']
+    ]
+  };
+  if (req.query.status){
+    query.where = {
+      status: true
+    }
+  }
+
+  models.STORE_TYPES.findAndCountAll(query).then(function(rec) {
     var routePath = req.route.path;
     var pageCount = Math.ceil(rec.count / perPage)
     var result = {
@@ -22,11 +29,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows

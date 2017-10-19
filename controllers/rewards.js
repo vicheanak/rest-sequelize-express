@@ -9,13 +9,21 @@ exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
   page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
-  models.REWARDS.findAndCountAll({
+
+  var query = {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
+    ['id', 'DESC']
     ]
-  }).then(function(rec) {
+  };
+
+  if (req.query.status){
+    query.where = {
+      status: true
+    }
+  }
+  models.REWARDS.findAndCountAll(query).then(function(rec) {
     var routePath = req.route.path;
     var pageCount = Math.ceil(rec.count / perPage)
     var result = {
@@ -25,11 +33,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows
@@ -48,34 +56,62 @@ exports.create = function(req, res) {
   fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
     if (err) console.log(err);
     sharp(appRoot+filePath)
-      .resize(500)
-      .toBuffer()
-      .then((data) =>{
-        fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
-          models.REWARDS.create({
-            name: req.body.name,
-            points: req.body.points,
-            imageUrl: req.headers.host + filePath
-          }).then(function(result) {
-            return res.jsonp(result);
-          });
+    .resize(500)
+    .toBuffer()
+    .then((data) =>{
+      fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
+        models.REWARDS.create({
+          name: req.body.name,
+          points: req.body.points,
+          imageUrl: req.headers.host + filePath,
+          status: req.body.status
+        }).then(function(result) {
+          return res.jsonp(result);
         });
-      })
-      .catch((err) => {
-        console.log('error', err);
       });
-
-
-    //fs.readFile(filePath, function(err, data) {
-      //if (err) throw err;
-      //res.send(data);
-    //});
+    })
+    .catch((err) => {
+      console.log('error', err);
+    });
   });
 };
 
 exports.update = function(req, res) {
-  models.REWARDS.update({
-    name: req.body.name
+  if (req.body.imageUrl.length > 200){
+    var fileUuid = uuid();
+    var base64Data = req.body.imageUrl;
+    var filePath = "/public/uploads/"+fileUuid+".png";
+    fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
+      if (err) console.log(err);
+      sharp(appRoot+filePath)
+      .resize(500)
+      .toBuffer()
+      .then((data) =>{
+        fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
+         models.REWARDS.update({
+           name: req.body.name,
+           points: req.body.points,
+           imageUrl: req.headers.host + filePath,
+           status: req.body.status
+         },{
+          where: {
+            id: req.params.id
+          }
+        }).then(function(result) {
+          return res.jsonp(result);
+        });
+      });
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+    });
+  }
+  else{
+   models.REWARDS.update({
+    name: req.body.name,
+    points: req.body.points,
+    status: req.body.status
   },{
     where: {
       id: req.params.id
@@ -83,6 +119,7 @@ exports.update = function(req, res) {
   }).then(function(result) {
     return res.jsonp(result);
   });
+}
 };
 
 exports.get = function(req, res) {

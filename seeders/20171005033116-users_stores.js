@@ -4,9 +4,9 @@ module.exports = {
   up: function (queryInterface, Sequelize) {
     var now = moment().format("YYYY-MM-DD HH:mm:ss");
     var data = [
-      {id: 1, position: 'Owner', status: true, createdAt: now, updatedAt: now, userIdUsersStores: 1, storeIdUsersStores: 1},
-      {id: 2, position: 'Auditor', status: true, createdAt: now, updatedAt: now, userIdUsersStores: 2, storeIdUsersStores: 1},
-      {id: 3, position: 'Owner', status: true, createdAt: now, updatedAt: now, userIdUsersStores: 2, storeIdUsersStores: 2},
+      {id: 1, createdAt: now, updatedAt: now, userIdUsersStores: 3, storeIdUsersStores: 1},
+      {id: 2, createdAt: now, updatedAt: now, userIdUsersStores: 3, storeIdUsersStores: 2},
+      {id: 3, createdAt: now, updatedAt: now, userIdUsersStores: 3, storeIdUsersStores: 3},
     ];
 
     return queryInterface.bulkInsert('USERS_STOREs', data);

@@ -13,7 +13,7 @@ var usersStores = require('../controllers/users_stores');
 var cors = require('cors');
 
 router.get('/', (req, res) => {
-  return res.jsonp({0: 'You are all good'});
+  return res.jsonp({0: 'Perfect Store API End Point - Provided by Edge Advertising'});
 });
 
 router.get('/display_types', cors(), displayTypes.all);
@@ -44,15 +44,14 @@ router.put('/stores_rewards/:id', cors(), storesRewards.update);
 router.get('/store_types', cors(), storeTypes.all);
 router.get('/store_types/:id', cors(), storeTypes.get);
 router.post('/store_types', cors(), storeTypes.create);
-router.put('/store_types/:id', cors(), storeTypes.update);
+router.put('/store_types/:id', storeTypes.update);
 
 router.get('/stores', cors(), stores.all);
 router.get('/stores/:id', cors(), stores.get);
 router.post('/stores', cors(), stores.create);
-router.put('/stores/:id', cors(), stores.update);
+router.put('/stores/:id', stores.update);
 
-router.get('/is_store/:token', cors(), stores.isStore);
-router.put('/auth_store', cors(), stores.auth_store);
+router.put('/auth_store', cors(), stores.authenticate);
 
 router.get('/users', cors(), users.all);
 router.get('/users/:id', cors(), users.get);

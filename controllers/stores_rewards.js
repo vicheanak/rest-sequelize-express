@@ -8,7 +8,31 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
+    ['id', 'DESC']
+    ],
+    include: [
+    {
+      model: models.REWARDS,
+      attributes: ['id', 'name']
+    },
+    {
+      model: models.STORES,
+      attributes: ['id', 'name', 'phone'],
+      include: [
+        {
+          model: models.STORE_TYPES,
+          attributes: ['id', 'name']
+        },
+        {
+          model: models.USERS_STORES,
+          include: [
+          {
+            model: models.USERS
+          }
+          ]
+        }
+      ]
+    }
     ]
   }).then(function(rec) {
     var routePath = req.route.path;
@@ -20,11 +44,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows
