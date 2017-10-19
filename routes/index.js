@@ -84,6 +84,8 @@ router.put('/auth_auditor', cors(), users.authAuditor);
 
 router.get('/users_stores', cors(), usersStores.all);
 router.get('/users_stores/:id', cors(), usersStores.get);
+router.get('/users_stores/users/:id', cors(), usersStores.getByUser);
+router.get('/users_stores/stores/:id', cors(), usersStores.getByStore);
 router.post('/users_stores', cors(), usersStores.create);
 router.put('/users_stores/:id', cors(), usersStores.update);
 
