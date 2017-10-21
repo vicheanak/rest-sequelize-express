@@ -46,7 +46,19 @@ exports.getByUser = (req, res) => {
     ],
     where: {
       userIdUsersStores: req.params.id
+    },
+    include: [
+    {
+      model: models.STORES,
+      attributes: ['id', 'name', 'phone', 'location'],
+      include: [
+        {
+          model: models.STORE_TYPES,
+          attributes: ['id', 'name']
+        }
+      ]
     }
+    ]
   };
   models.USERS_STORES.findAndCountAll(data).then(function(rec) {
     var routePath = req.route.path;
@@ -84,7 +96,12 @@ exports.getByStore = (req, res) => {
     ],
     where: {
       storeIdUsersStores: req.params.id
+    },
+    include: [
+    {
+      model: models.USERS
     }
+    ]
   };
   models.USERS_STORES.findAndCountAll(data).then(function(rec) {
     var routePath = req.route.path;

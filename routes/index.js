@@ -9,6 +9,7 @@ var storeTypes = require('../controllers/store_types');
 var stores = require('../controllers/stores');
 var users = require('../controllers/users');
 var usersStores = require('../controllers/users_stores');
+var storeImages = require('../controllers/store_images');
 
 var cors = require('cors');
 
@@ -88,6 +89,12 @@ router.get('/users_stores/users/:id', cors(), usersStores.getByUser);
 router.get('/users_stores/stores/:id', cors(), usersStores.getByStore);
 router.post('/users_stores', cors(), usersStores.create);
 router.put('/users_stores/:id', cors(), usersStores.update);
+
+
+router.get('/store_images/stores/:id', cors(), storeImages.getByStore);
+router.post('/store_images', cors(), storeImages.create);
+router.put('/store_images/:id', cors(), storeImages.update);
+
 
 
 module.exports = router;

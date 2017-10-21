@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         STORES.hasMany(models.USERS_STORES, {
           foreignKey: 'storeIdUsersStores'
         });
+        STORES.hasMany(models.STORE_IMAGES, {
+          foreignKey: 'storeIdStoreImages'
+        });
         STORES.belongsToMany(models.USERS, {
           as: 'STORES',
           through: models.USERS_STORES,
