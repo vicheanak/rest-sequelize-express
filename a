@@ -1,0 +1,356 @@
+[1mdiff --git a/config/config.json b/config/config.json[m
+[1mindex 6a7ddbf..9a3cd40 100755[m
+[1m--- a/config/config.json[m
+[1m+++ b/config/config.json[m
+[36m@@ -1,21 +1,21 @@[m
+ {[m
+   "development": {[m
+     "username": "root",[m
+[31m-    "password": "helloworld",[m
+[32m+[m[32m    "password": "tU/x@168rY",[m
+     "database": "perfectstore_development",[m
+     "host": "127.0.0.1",[m
+     "dialect": "mysql"[m
+   },[m
+   "test": {[m
+     "username": "root",[m
+[31m-    "password": "helloworld",[m
+[32m+[m[32m    "password": "tU/x@168rY",[m
+     "database": "perfectstore_test",[m
+     "host": "127.0.0.1",[m
+     "dialect": "mysql"[m
+   },[m
+   "production": {[m
+     "username": "root",[m
+[31m-    "password": "helloworld",[m
+[32m+[m[32m    "password": "tU/x@168rY",[m
+     "database": "perfectstore_production",[m
+     "host": "127.0.0.1",[m
+     "dialect": "mysql"[m
+[1mdiff --git a/controllers/store_images.js b/controllers/store_images.js[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/logs/msr.log b/logs/msr.log[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/migrations/20171004130045-relation-store-points.js b/migrations/20171004130045-relation-store-points.js[m
+[1mindex 622c370..0ee941a 100755[m
+[1m--- a/migrations/20171004130045-relation-store-points.js[m
+[1m+++ b/migrations/20171004130045-relation-store-points.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'STORES',[m
+[32m+[m[32m          model: 'STOREs',[m
+           key: 'id'[m
+         }[m
+       })[m
+[1mdiff --git a/migrations/20171004143320-addcolumn-storerewards-rewardid.js b/migrations/20171004143320-addcolumn-storerewards-rewardid.js[m
+[1mindex e9e32b7..fabc583 100755[m
+[1m--- a/migrations/20171004143320-addcolumn-storerewards-rewardid.js[m
+[1m+++ b/migrations/20171004143320-addcolumn-storerewards-rewardid.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'REWARDS',[m
+[32m+[m[32m          model: 'REWARDs',[m
+           key: 'id'[m
+         }[m
+       }[m
+[1mdiff --git a/migrations/20171004143337-addcolumn-storepoints-userid.js b/migrations/20171004143337-addcolumn-storepoints-userid.js[m
+[1mindex 9a54e8d..646ac47 100755[m
+[1m--- a/migrations/20171004143337-addcolumn-storepoints-userid.js[m
+[1m+++ b/migrations/20171004143337-addcolumn-storepoints-userid.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'USERS',[m
+[32m+[m[32m          model: 'USERs',[m
+           key: 'id'[m
+         }[m
+       })[m
+[1mdiff --git a/migrations/20171005031446-addcolumn-storepoints-displayid.js b/migrations/20171005031446-addcolumn-storepoints-displayid.js[m
+[1mindex 8b5add1..cc8e795 100755[m
+[1m--- a/migrations/20171005031446-addcolumn-storepoints-displayid.js[m
+[1m+++ b/migrations/20171005031446-addcolumn-storepoints-displayid.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'DISPLAYS',[m
+[32m+[m[32m          model: 'DISPLAYs',[m
+           key: 'id'[m
+         }[m
+       })[m
+[1mdiff --git a/migrations/20171005032552-addcolumn-usersstores-userid.js b/migrations/20171005032552-addcolumn-usersstores-userid.js[m
+[1mindex 9afc23e..1b55d43 100755[m
+[1m--- a/migrations/20171005032552-addcolumn-usersstores-userid.js[m
+[1m+++ b/migrations/20171005032552-addcolumn-usersstores-userid.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'USERS',[m
+[32m+[m[32m          model: 'USERs',[m
+           key: 'id'[m
+         }[m
+       })[m
+[1mdiff --git a/migrations/20171005032558-addcolumn-usersstores-storeid.js b/migrations/20171005032558-addcolumn-usersstores-storeid.js[m
+[1mindex e075d28..1c44549 100755[m
+[1m--- a/migrations/20171005032558-addcolumn-usersstores-storeid.js[m
+[1m+++ b/migrations/20171005032558-addcolumn-usersstores-storeid.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'STORES',[m
+[32m+[m[32m          model: 'STOREs',[m
+           key: 'id'[m
+         }[m
+       })[m
+[1mdiff --git a/migrations/20171019175250-create-store-images.js b/migrations/20171019175250-create-store-images.js[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/migrations/20171019175732-addcolumn-storeimages-storeid.js b/migrations/20171019175732-addcolumn-storeimages-storeid.js[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mindex e9fbec6..2555c9a[m
+[1m--- a/migrations/20171019175732-addcolumn-storeimages-storeid.js[m
+[1m+++ b/migrations/20171019175732-addcolumn-storeimages-storeid.js[m
+[36m@@ -7,7 +7,7 @@[m [mmodule.exports = {[m
+         type: Sequelize.INTEGER,[m
+         allowNull: true,[m
+         references: {[m
+[31m-          model: 'STORES',[m
+[32m+[m[32m          model: 'STOREs',[m
+           key: 'id'[m
+         }[m
+       })[m
+[1mdiff --git a/models/store_images.js b/models/store_images.js[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/pm2-ecosystem.json b/pm2-ecosystem.json[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/pm2-main.js b/pm2-main.js[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/01272ef5-b4a9-432f-be55-21dd7471b21b.png b/public/uploads/01272ef5-b4a9-432f-be55-21dd7471b21b.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/068320b2-aef1-44e2-b234-36db9a9f4af0.png b/public/uploads/068320b2-aef1-44e2-b234-36db9a9f4af0.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/0a39d24a-a1c4-45d9-bba5-acf51168159f.png b/public/uploads/0a39d24a-a1c4-45d9-bba5-acf51168159f.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/0af4e050-f491-478d-8bb4-e0c07edea284.png b/public/uploads/0af4e050-f491-478d-8bb4-e0c07edea284.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/0dc6960d-357c-4869-81cb-c6a5f6f937c6.png b/public/uploads/0dc6960d-357c-4869-81cb-c6a5f6f937c6.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/0e49d247-a2d4-4d1a-b9d3-5d9fa0dd2f96.png b/public/uploads/0e49d247-a2d4-4d1a-b9d3-5d9fa0dd2f96.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/13f83e8f-48dc-402d-91a0-01a158bad730.png b/public/uploads/13f83e8f-48dc-402d-91a0-01a158bad730.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/15cee5fd-e073-4a28-b843-5f4c86464ea4.png b/public/uploads/15cee5fd-e073-4a28-b843-5f4c86464ea4.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/1747dac7-22b0-4333-8aa6-528ace43b6a7.png b/public/uploads/1747dac7-22b0-4333-8aa6-528ace43b6a7.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/17f06783-203f-4e72-94de-8300dd4b734f.png b/public/uploads/17f06783-203f-4e72-94de-8300dd4b734f.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/1ad4311f-f17e-4763-a304-3f9018ae2c41.png b/public/uploads/1ad4311f-f17e-4763-a304-3f9018ae2c41.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/1c90bb4d-acba-4ad1-9c72-c132b5504d68.png b/public/uploads/1c90bb4d-acba-4ad1-9c72-c132b5504d68.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/1d4ab20b-ae45-49de-bb58-4e6b095ea808.png b/public/uploads/1d4ab20b-ae45-49de-bb58-4e6b095ea808.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/21464e70-7522-460e-a699-0c92f358acc0.png b/public/uploads/21464e70-7522-460e-a699-0c92f358acc0.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/24554500-52a8-4282-a497-f8e3777f8dbe.png b/public/uploads/24554500-52a8-4282-a497-f8e3777f8dbe.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/2820420f-6e82-4f12-9c74-f5204200afbd.png b/public/uploads/2820420f-6e82-4f12-9c74-f5204200afbd.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/2c665b84-4c96-4d86-ae63-187a1b018c44.png b/public/uploads/2c665b84-4c96-4d86-ae63-187a1b018c44.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/30f57a5f-6c98-4fa7-b58d-60b51fff3fff.png b/public/uploads/30f57a5f-6c98-4fa7-b58d-60b51fff3fff.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/31472ea8-7bbe-43e2-bbb4-42b846722fe8.png b/public/uploads/31472ea8-7bbe-43e2-bbb4-42b846722fe8.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/39d8a3f1-66bc-4767-8444-200121e4cf51.png b/public/uploads/39d8a3f1-66bc-4767-8444-200121e4cf51.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/3c312ad6-89f6-43ed-9e38-946ef11d26bf.png b/public/uploads/3c312ad6-89f6-43ed-9e38-946ef11d26bf.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/3fc9346b-31b9-400c-aee6-f85661e6ca0b.png b/public/uploads/3fc9346b-31b9-400c-aee6-f85661e6ca0b.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/408cc459-1c4e-46a3-9acb-5204188ff0b3.png b/public/uploads/408cc459-1c4e-46a3-9acb-5204188ff0b3.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/457e1e95-c6bc-41f7-bdec-e8bed47f117c.png b/public/uploads/457e1e95-c6bc-41f7-bdec-e8bed47f117c.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/4c3c40e6-d6bf-457c-af81-2d6042347c93.png b/public/uploads/4c3c40e6-d6bf-457c-af81-2d6042347c93.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/502654af-7288-4215-87e2-8774b7bff4c0.png b/public/uploads/502654af-7288-4215-87e2-8774b7bff4c0.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/55bfc493-6ac7-45ab-b482-205c45b0e0e8.png b/public/uploads/55bfc493-6ac7-45ab-b482-205c45b0e0e8.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/59f1df9c-6ae8-4448-ba30-6a8b384e7bd9.png b/public/uploads/59f1df9c-6ae8-4448-ba30-6a8b384e7bd9.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/5afa9cb9-f1cf-4049-bedc-da53b7781d23.png b/public/uploads/5afa9cb9-f1cf-4049-bedc-da53b7781d23.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/5e8ba0aa-eb42-4a47-9c99-7c91f3a29f3f.png b/public/uploads/5e8ba0aa-eb42-4a47-9c99-7c91f3a29f3f.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/5ee1ff5b-e06b-46d5-be31-71ba8eafeae8.png b/public/uploads/5ee1ff5b-e06b-46d5-be31-71ba8eafeae8.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/6fadad05-dbb0-4bcf-b6a5-7bdd243ab4aa.png b/public/uploads/6fadad05-dbb0-4bcf-b6a5-7bdd243ab4aa.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/746ab558-955f-493b-8be1-c1cf53f1b7f3.png b/public/uploads/746ab558-955f-493b-8be1-c1cf53f1b7f3.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/7abe52ff-c9d0-4acd-9ec3-e597957b1fcd.png b/public/uploads/7abe52ff-c9d0-4acd-9ec3-e597957b1fcd.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/7ac9c2ac-4e9e-4dbb-a8aa-ae7c4c86fb65.png b/public/uploads/7ac9c2ac-4e9e-4dbb-a8aa-ae7c4c86fb65.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/7dd52ecd-b1f0-4fbf-8948-3a032d75c0e8.png b/public/uploads/7dd52ecd-b1f0-4fbf-8948-3a032d75c0e8.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/7e8e2042-3d98-4a09-b386-3e516f5f41e2.png b/public/uploads/7e8e2042-3d98-4a09-b386-3e516f5f41e2.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/83ef0eb3-cfae-407c-ad11-73621fe85f15.png b/public/uploads/83ef0eb3-cfae-407c-ad11-73621fe85f15.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/89819364-b77b-40ae-a96c-b5a8a05b372e.png b/public/uploads/89819364-b77b-40ae-a96c-b5a8a05b372e.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/9046bc4b-5eb2-419a-9574-d955163eedcc.png b/public/uploads/9046bc4b-5eb2-419a-9574-d955163eedcc.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/904cd50f-6fb3-459c-9061-94969a6a3213.png b/public/uploads/904cd50f-6fb3-459c-9061-94969a6a3213.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/90b12613-fc23-4106-836d-da91cae85531.png b/public/uploads/90b12613-fc23-4106-836d-da91cae85531.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/91f4dbb3-a705-414b-a25c-0584ffbfef00.png b/public/uploads/91f4dbb3-a705-414b-a25c-0584ffbfef00.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/9d4370f5-ab6b-4dce-81f9-4475e6f1cd38.png b/public/uploads/9d4370f5-ab6b-4dce-81f9-4475e6f1cd38.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/a0cca549-4d60-4ded-8ae1-5cba5513fdbd.png b/public/uploads/a0cca549-4d60-4ded-8ae1-5cba5513fdbd.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/a67e7afb-88a5-47f6-9043-9e9a74937460.png b/public/uploads/a67e7afb-88a5-47f6-9043-9e9a74937460.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/a7b3afd5-5e1a-4d2d-a5b2-0136bd8d50ef.png b/public/uploads/a7b3afd5-5e1a-4d2d-a5b2-0136bd8d50ef.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/aa313cbf-9729-4f6a-b958-a728df2f7756.png b/public/uploads/aa313cbf-9729-4f6a-b958-a728df2f7756.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/aba138d6-8fd1-4f64-8fd4-9a69032c5d92.png b/public/uploads/aba138d6-8fd1-4f64-8fd4-9a69032c5d92.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/ae94f1ec-5e27-425f-b4ae-7366e40353b9.png b/public/uploads/ae94f1ec-5e27-425f-b4ae-7366e40353b9.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/aed80162-3699-43eb-8006-e10b735f08a8.png b/public/uploads/aed80162-3699-43eb-8006-e10b735f08a8.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/b5db5cca-8158-4364-8e2a-3fef4bf3ce9c.png b/public/uploads/b5db5cca-8158-4364-8e2a-3fef4bf3ce9c.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/b866eb1f-74d2-4fd9-8ca0-8627fc1bbc2d.png b/public/uploads/b866eb1f-74d2-4fd9-8ca0-8627fc1bbc2d.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/bcceb428-d665-4594-baae-e590ab34ba2b.png b/public/uploads/bcceb428-d665-4594-baae-e590ab34ba2b.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/be12331a-a886-4faa-a05e-30a994224219.png b/public/uploads/be12331a-a886-4faa-a05e-30a994224219.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/c3c11720-7848-4ef0-8233-69ad173cdfe2.png b/public/uploads/c3c11720-7848-4ef0-8233-69ad173cdfe2.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/c648c5ab-2adc-49c8-8c17-22c811539f01.png b/public/uploads/c648c5ab-2adc-49c8-8c17-22c811539f01.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/ca864a77-6e9b-424c-89e1-2d87f499bddd.png b/public/uploads/ca864a77-6e9b-424c-89e1-2d87f499bddd.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/ce841dbc-d74a-4abf-8b4b-4a9a0e44475e.png b/public/uploads/ce841dbc-d74a-4abf-8b4b-4a9a0e44475e.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/ce8b208e-d0aa-4f6c-9657-dc261bc33835.png b/public/uploads/ce8b208e-d0aa-4f6c-9657-dc261bc33835.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/dce11021-2c7b-4012-b712-e04bc56bd27f.png b/public/uploads/dce11021-2c7b-4012-b712-e04bc56bd27f.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/dd3d216d-8456-4dec-9d25-a9ca01e41f26.png b/public/uploads/dd3d216d-8456-4dec-9d25-a9ca01e41f26.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/de1dbb5a-32fb-4473-a6a9-3a21e14d78b0.png b/public/uploads/de1dbb5a-32fb-4473-a6a9-3a21e14d78b0.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/de7765ce-1030-40c9-8fc9-63dbe344c616.png b/public/uploads/de7765ce-1030-40c9-8fc9-63dbe344c616.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/e082002f-9eb4-4f1b-a2a5-20b90f77a2b4.png b/public/uploads/e082002f-9eb4-4f1b-a2a5-20b90f77a2b4.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/e4902829-c70e-469e-8549-f07c4761cf2c.png b/public/uploads/e4902829-c70e-469e-8549-f07c4761cf2c.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/efffcea1-7298-4818-b0ba-bce095327af0.png b/public/uploads/efffcea1-7298-4818-b0ba-bce095327af0.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/f0d7470c-db82-4d24-9e25-5d37804fc731.png b/public/uploads/f0d7470c-db82-4d24-9e25-5d37804fc731.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/f1a1feb9-7eb7-45b1-bd5b-4582438559b0.png b/public/uploads/f1a1feb9-7eb7-45b1-bd5b-4582438559b0.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/f25cd2fa-7de4-4bbc-a256-79eee034fae6.png b/public/uploads/f25cd2fa-7de4-4bbc-a256-79eee034fae6.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/public/uploads/f55fb470-ae2f-4c00-84ae-fa78fc8286de.png b/public/uploads/f55fb470-ae2f-4c00-84ae-fa78fc8286de.png[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
+[1mdiff --git a/seeders/20171019175323-store_images.js b/seeders/20171019175323-store_images.js[m
+[1mold mode 100644[m
+[1mnew mode 100755[m
