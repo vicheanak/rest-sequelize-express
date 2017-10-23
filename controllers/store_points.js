@@ -13,7 +13,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
+    ['id', 'DESC']
     ]
   }).then(function(rec) {
     var routePath = req.route.path;
@@ -25,11 +25,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows
@@ -39,40 +39,96 @@ exports.all = (req, res) => {
   });
 };
 
+// exports.create = function(req, res) {
+//   var fileUuid = uuid();
+//   var base64Data = req.body.imageUrl;
+//   var filePath = "/public/uploads/"+fileUuid+".png";
+//   fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
+//     if (err) console.log(err);
+//     sharp(appRoot+filePath)
+//     .resize(500)
+//     .toBuffer()
+//     .then((data) =>{
+//       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
+//         models.STORE_POINTS.create({
+//           points: req.body.name,
+//           imageUrl: req.header.host + filePath,
+//           storeIdStorePoints: req.body.storeIdStorePoints,
+//           userIdStorePoints: req.body.userIdStorePoints,
+//           displayIdStorePoints: req.body.displayIdStorePoints
+//         }).then(function(result) {
+//           return res.jsonp(result);
+//         });
+//       });
+//     })
+//     .catch((err) => {
+//       console.log('error', err);
+//     });
+
+
+//     //fs.readFile(appRoot + filePath, function(err, data) {
+//       //if (err) throw err;
+//       //res.send(data);
+//     //});
+//   });
+
+// };
+
 exports.create = function(req, res) {
-  var fileUuid = uuid();
-  var base64Data = req.body.imageUrl;
-  var filePath = "/public/uploads/"+fileUuid+".png";
-  fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
-    if (err) console.log(err);
-    sharp(appRoot+filePath)
-      .resize(500)
-      .toBuffer()
-      .then((data) =>{
-        fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
-          models.STORE_POINTS.create({
-            points: req.body.name,
-            imageUrl: req.header.host + filePath,
-            storeIdStorePoints: req.body.storeIdStorePoints,
-            userIdStorePoints: req.body.userIdStorePoints,
-            displayIdStorePoints: req.body.displayIdStorePoints
-          }).then(function(result) {
-            return res.jsonp(result);
-          });
-        });
-      })
-      .catch((err) => {
-        console.log('error', err);
+
+  var fileName = req.body.fileName;
+
+  var filePath = "/public/uploads/"+fileName;
+  var appRootFilePath = appRoot + "/public/uploads/"+fileName;
+  console.log('')
+  sharp(appRootFilePath)
+  .resize(500)
+  .toBuffer()
+  .then((data) =>{
+    fs.writeFile(appRootFilePath, data, 'base64', function(err) {
+      models.STORE_POINTS.create({
+        points: req.body.name,
+        imageUrl: req.headers.host + filePath,
+        storeIdStorePoints: req.body.storeIdStorePoints,
+        userIdStorePoints: req.body.userIdStorePoints,
+        displayIdStorePoints: req.body.displayIdStorePoints
+      }).then(function(result) {
+        return res.jsonp(result);
       });
-
-
-    //fs.readFile(appRoot + filePath, function(err, data) {
-      //if (err) throw err;
-      //res.send(data);
-    //});
+    });
+  })
+  .catch((err) => {
+    console.log('error', err);
   });
 
 };
+
+
+
+exports.upload = function(req, res){
+ console.log("##### uploaded");
+ var filePath = appRoot + "/public/uploads/" + req.body.filename;
+ sharp(appRoot+filePath)
+ .resize(500)
+ .toBuffer()
+ .then((data) =>{
+   fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
+     models.STORE_POINTS.create({
+       points: req.body.name,
+       imageUrl: req.header.host + filePath,
+       storeIdStorePoints: req.body.storeIdStorePoints,
+       userIdStorePoints: req.body.userIdStorePoints,
+       displayIdStorePoints: req.body.displayIdStorePoints
+     }).then(function(result) {
+       return res.jsonp(result);
+     });
+   });
+ })
+ .catch((err) => {
+   console.log('error', err);
+ });
+ res.json({result:1});
+}
 
 exports.update = function(req, res) {
   models.STORE_POINTS.update({

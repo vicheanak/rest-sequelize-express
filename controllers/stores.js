@@ -104,7 +104,12 @@ exports.get = function(req, res) {
   models.STORES.find({
     where: {
       id: req.params.id
+    },
+    include: [
+    {
+      model: models.STORE_TYPES
     }
+    ]
   }).then(function(result) {
     return res.jsonp(result);
   });

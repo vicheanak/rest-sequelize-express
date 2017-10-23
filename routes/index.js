@@ -10,11 +10,14 @@ var stores = require('../controllers/stores');
 var users = require('../controllers/users');
 var usersStores = require('../controllers/users_stores');
 var storeImages = require('../controllers/store_images');
+var multer = require('multer');
+var appRoot = require('app-root-path');
+var sharp = require('sharp');
 
 var cors = require('cors');
 
 router.get('/', (req, res) => {
-  return res.jsonp({0: 'Perfect Store API End Point - Provided by Edge Advertising'});
+	return res.jsonp({0: 'Perfect Store API End Point - Provided by Edge Advertising'});
 });
 
 router.get('/display_types', cors(), displayTypes.all);
@@ -36,6 +39,26 @@ router.get('/store_points', cors(), storePoints.all);
 router.get('/store_points/:id', cors(), storePoints.get);
 router.post('/store_points', cors(), storePoints.create);
 router.put('/store_points/:id', cors(), storePoints.update);
+
+var storage = multer.diskStorage(
+{
+	destination:function(req, file, cb){
+		var filePath = appRoot + "/public/uploads/";
+		cb(null,filePath);
+	},
+	filename:function(req,file,cb){
+		var filename = file.originalname;
+		console.log('filename', filename);
+		if(filename != undefined){
+			cb(null, filename);
+		}
+	}
+});
+
+//For multipart/form-data Uploading
+var upload = multer({storage:storage});
+
+router.post('/store_points_upload', cors(), upload.single('file'), storePoints.upload);
 
 router.get('/stores_rewards', cors(), storesRewards.all);
 router.get('/stores_rewards/:id', cors(), storesRewards.get);

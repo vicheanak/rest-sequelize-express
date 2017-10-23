@@ -9,8 +9,19 @@ exports.all = (req, res) => {
     limit: perPage,
     orderBy: [
       ['id', 'DESC']
+    ],
+    include: [
+      {
+        model: models.DISPLAYS,
+        attributes: ['id', 'name', 'imageUrl', 'points', 'status']
+      }
     ]
   };
+  if (req.query.display_status){
+    query.include[0].where = {
+      status: true
+    }
+  }
   if (req.query.status){
     query.where = {
       status: true

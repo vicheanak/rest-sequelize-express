@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         STORE_IMAGES.belongsTo(models.STORES, {
           foreignKey: 'storeIdStoreImages'
         });
+        STORE_IMAGES.hasMany(models.STORE_POINTS, {
+          foreignKey: 'storeImageIdStorePoints'
+        });
       }
     }
   });
