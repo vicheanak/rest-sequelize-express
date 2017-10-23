@@ -43,10 +43,13 @@ router.put('/store_points/:id', cors(), storePoints.update);
 var storage = multer.diskStorage(
 {
 	destination:function(req, file, cb){
+		console.log('test');
 		var filePath = appRoot + "/public/uploads/";
+
 		cb(null,filePath);
 	},
 	filename:function(req,file,cb){
+		console.log('geas');
 		var filename = file.originalname;
 		console.log('filename', filename);
 		if(filename != undefined){
@@ -59,6 +62,7 @@ var storage = multer.diskStorage(
 var upload = multer({storage:storage});
 
 router.post('/store_points_upload', cors(), upload.single('file'), storePoints.upload);
+
 
 router.get('/stores_rewards', cors(), storesRewards.all);
 router.get('/stores_rewards/:id', cors(), storesRewards.get);

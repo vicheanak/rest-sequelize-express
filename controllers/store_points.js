@@ -107,26 +107,6 @@ exports.create = function(req, res) {
 
 exports.upload = function(req, res){
  console.log("##### uploaded");
- var filePath = appRoot + "/public/uploads/" + req.body.filename;
- sharp(appRoot+filePath)
- .resize(500)
- .toBuffer()
- .then((data) =>{
-   fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
-     models.STORE_POINTS.create({
-       points: req.body.name,
-       imageUrl: req.header.host + filePath,
-       storeIdStorePoints: req.body.storeIdStorePoints,
-       userIdStorePoints: req.body.userIdStorePoints,
-       displayIdStorePoints: req.body.displayIdStorePoints
-     }).then(function(result) {
-       return res.jsonp(result);
-     });
-   });
- })
- .catch((err) => {
-   console.log('error', err);
- });
  res.json({result:1});
 }
 
