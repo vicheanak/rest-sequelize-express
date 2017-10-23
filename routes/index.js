@@ -37,6 +37,11 @@ router.put('/rewards/:id', cors(), rewards.update);
 
 router.get('/store_points', cors(), storePoints.all);
 router.get('/store_points/:id', cors(), storePoints.get);
+router.get('/store_points/store_sum/:id', cors(), storePoints.getStoreSum);
+router.get('/store_points/store_earned/:id', cors(), storePoints.getEarned, storePoints.printEarned);
+router.get('/store_points/store_spent/:id', cors(), storePoints.getSpent, storePoints.printSpent);
+// router.get('/store_points/store_remaining/:id', cors(), storePoints.getStoreEarnedPoints, storePoints.getStoreSpentPoints, storePoints.getStoreRemainingPoints);
+router.get('/store_points/store_remaining/:id', cors(), storePoints.getEarned, storePoints.getSpent, storePoints.getRemaining, storePoints.printRemaining);
 router.post('/store_points', cors(), storePoints.create);
 router.put('/store_points/:id', cors(), storePoints.update);
 

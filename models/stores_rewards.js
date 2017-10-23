@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   var STORES_REWARDS = sequelize.define('STORES_REWARDS', {
     status: DataTypes.INTEGER,
     imageUrl: DataTypes.STRING,
+    points: DataTypes.INTEGER,
     deliveriedAt: DataTypes.DATE
   }, {
     classMethods: {

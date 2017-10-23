@@ -87,11 +87,13 @@ exports.create = function(req, res) {
   .then((data) =>{
     fs.writeFile(appRootFilePath, data, 'base64', function(err) {
       models.STORE_POINTS.create({
-        points: req.body.name,
+        points: req.body.points,
+        uId: req.body.uId,
         imageUrl: req.headers.host + filePath,
         storeIdStorePoints: req.body.storeIdStorePoints,
         userIdStorePoints: req.body.userIdStorePoints,
-        displayIdStorePoints: req.body.displayIdStorePoints
+        displayIdStorePoints: req.body.displayIdStorePoints,
+        storeImageIdStorePoints: req.body.storeImageIdStorePoints
       }).then(function(result) {
         return res.jsonp(result);
       });
@@ -122,12 +124,91 @@ exports.update = function(req, res) {
   });
 };
 
-exports.get = function(req, res) {
+exports.getStoreSum = function(req, res) {
+  models.STORE_POINTS.findAll({
+    where: {
+      storeIdStorePoints: req.params.id
+    },
+    attributes: [
+    'id',
+    'storeImageIdStorePoints',
+    [models.sequelize.fn('sum', models.sequelize.col('points')), 'total_points']
+    ],
+    group: ['storeImageIdStorePoints'],
+    include: [
+    {
+      model: models.STORE_IMAGES,
+      attributes: ['id', 'capturedAt']
+    }
+    ]
+  }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
+exports.getEarned = function(req, res, next) {
   models.STORE_POINTS.find({
     where: {
-      id: req.params.id
+      storeIdStorePoints: req.params.id
+    },
+    attributes: [
+    [models.sequelize.fn('sum', models.sequelize.col('points')), 'total_earned']
+    ],
+    group: ['storeIdStorePoints'],
+  }).then(function(result) {
+    res.locals.totalEarned = result;
+    next();
+  });
+}
+
+exports.getSpent = function(req, res, next) {
+  models.STORES_REWARDS.find({
+    attributes: [
+    [models.sequelize.fn('sum', models.sequelize.col('STORES_REWARDS.points')),
+    'total_spent']
+    ],
+    group: ['storeIdStoresRewards'],
+    where: {
+      storeIdStoresRewards: req.params.id
     }
   }).then(function(result) {
+    res.locals.totalSpent = result;
+    next();
+  });
+}
+
+exports.getRemaining = function(req, res, next) {
+
+  var totalSpent = res.locals.totalSpent.dataValues.total_spent;
+  var totalEarned = res.locals.totalEarned.dataValues.total_earned;
+
+  var remains = '(' + totalEarned + '-' + totalSpent + ')';
+
+  models.STORE_POINTS.find({
+    attributes: [
+    [remains, 'total_remaining']
+    ]
+  }).then(function(result) {
+    res.locals.totalRemaining = result;
+    next();
+  });
+}
+
+
+exports.printEarned = function(req, res){
+  return res.json(res.locals.totalEarned);
+}
+
+exports.printSpent = function(req, res){
+  return res.json(res.locals.totalSpent);
+}
+
+exports.printRemaining = function(req, res){
+  return res.json(res.locals.totalRemaining);
+}
+
+exports.get = function(req, res) {
+  models.STORE_POINTS.findAll().then(function(result) {
     return res.jsonp(result);
   });
 }

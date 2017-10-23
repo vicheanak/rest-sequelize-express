@@ -1,4 +1,10 @@
 var models  = require('../models');
+var moment = require('moment');
+var fs = require('fs');
+var appRoot = require('app-root-path');
+var uuid = require('uuid/v4');
+var sharp = require('sharp');
+var multer = require('multer');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -59,11 +65,31 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-  models.STORE_IMAGES.create({
-    name: req.body.name
-  }).then(function(result) {
-    return res.jsonp(result);
+  var fileName = req.body.fileName;
+  var filePath = "/public/uploads/"+fileName;
+  var appRootFilePath = appRoot + "/public/uploads/"+fileName;
+  sharp(appRootFilePath)
+  .resize(500)
+  .toBuffer()
+  .then((data) =>{
+    fs.writeFile(appRootFilePath, data, 'base64', function(err) {
+      var now = moment().format("YYYY-MM-DD HH:mm:ss");
+      console.log('now', now);
+      console.log('imageUrl', req.headers.host + filePath);
+      console.log('storeIdStoreImages', req.body.storeIdStoreImages);
+      models.STORE_IMAGES.create({
+        capturedAt: now,
+        imageUrl: req.headers.host + filePath,
+        storeIdStoreImages: req.body.storeIdStoreImages
+      }).then(function(result) {
+        return res.jsonp(result);
+      });
+    });
+  })
+  .catch((err) => {
+    console.log('error', err);
   });
+
 };
 
 exports.update = function(req, res) {
