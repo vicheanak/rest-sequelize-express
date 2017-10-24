@@ -69,7 +69,7 @@ exports.create = function(req, res) {
         models.DISPLAYS.create({
          name: req.body.name,
          points: req.body.points,
-         imageUrl: req.headers.host + filePath,
+         imageUrl: req.protocol + '://' + req.headers.host + filePath,
          storeTypeIdDisplays: req.body.storeTypeId,
          displayTypeIdDisplays: req.body.displayTypeId,
          status: req.body.status

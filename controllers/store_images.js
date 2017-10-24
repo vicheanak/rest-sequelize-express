@@ -79,7 +79,7 @@ exports.create = function(req, res) {
       console.log('storeIdStoreImages', req.body.storeIdStoreImages);
       models.STORE_IMAGES.create({
         capturedAt: now,
-        imageUrl: req.headers.host + filePath,
+        imageUrl: req.protocol + '://' + req.headers.host + filePath,
         storeIdStoreImages: req.body.storeIdStoreImages
       }).then(function(result) {
         return res.jsonp(result);

@@ -89,7 +89,7 @@ exports.create = function(req, res) {
       models.STORE_POINTS.create({
         points: req.body.points,
         uId: req.body.uId,
-        imageUrl: req.headers.host + filePath,
+        imageUrl: req.protocol + '://' + req.headers.host + filePath,
         storeIdStorePoints: req.body.storeIdStorePoints,
         userIdStorePoints: req.body.userIdStorePoints,
         displayIdStorePoints: req.body.displayIdStorePoints,
@@ -124,6 +124,21 @@ exports.update = function(req, res) {
   });
 };
 
+exports.getStore = function(req, res){
+ models.STORE_POINTS.findAll({
+  where: {
+    storeImageIdStorePoints: req.params.id
+  },
+  include: [
+  {
+    model: models.DISPLAYS
+  }
+  ]
+}).then(function(result) {
+  return res.jsonp(result);
+});
+}
+
 exports.getStoreSum = function(req, res) {
   models.STORE_POINTS.findAll({
     where: {
@@ -132,13 +147,27 @@ exports.getStoreSum = function(req, res) {
     attributes: [
     'id',
     'storeImageIdStorePoints',
+    'storeIdStorePoints',
     [models.sequelize.fn('sum', models.sequelize.col('points')), 'total_points']
+    ],
+    order: [
+    ['id', 'DESC'],
     ],
     group: ['storeImageIdStorePoints'],
     include: [
     {
       model: models.STORE_IMAGES,
-      attributes: ['id', 'capturedAt']
+      attributes: ['id', 'capturedAt', 'imageUrl']
+    },
+    {
+      model: models.STORES,
+      attributes: ['id', 'name'],
+      include: [
+      {
+        model: models.STORE_TYPES,
+        attributes: ['id', 'name']
+      }
+      ]
     }
     ]
   }).then(function(result) {

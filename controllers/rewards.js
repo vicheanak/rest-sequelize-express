@@ -63,7 +63,7 @@ exports.create = function(req, res) {
         models.REWARDS.create({
           name: req.body.name,
           points: req.body.points,
-          imageUrl: req.headers.host + filePath,
+          imageUrl: req.protocol + '://' + req.headers.host + filePath,
           status: req.body.status
         }).then(function(result) {
           return res.jsonp(result);
