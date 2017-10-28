@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     location: DataTypes.STRING,
     phone: DataTypes.STRING,
+    lat: DataTypes.DECIMAL,
+    lng: DataTypes.DECIMAL,
     status: DataTypes.BOOLEAN,
     username: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -20,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       associate: function(models) {
         STORES.belongsTo(models.STORE_TYPES, {
           foreignKey: 'storeTypeIdStores'
+        });
+        STORES.belongsTo(models.REGIONS, {
+          foreignKey: 'regionIdStores'
         });
         STORES.hasMany(models.STORE_POINTS, {
           foreignKey: 'storeIdStorePoints'

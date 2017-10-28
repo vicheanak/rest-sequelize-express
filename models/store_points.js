@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         STORE_POINTS.belongsTo(models.DISPLAYS, {
           foreignKey: 'displayIdStorePoints'
         });
+        STORE_POINTS.belongsTo(models.CONDITIONS, {
+          foreignKey: 'conditionIdStorePoints'
+        });
         STORE_POINTS.belongsTo(models.STORE_IMAGES, {
           foreignKey: 'storeImageIdStorePoints'
         });

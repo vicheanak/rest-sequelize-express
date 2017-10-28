@@ -10,36 +10,12 @@ exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
   page = parseInt(page) - 1;
   var perPage = req.query.per_page ? req.query.per_page : 30;
-  models.STORES_REWARDS.findAndCountAll({
+  models.STORE_IMAGES.findAndCountAll({
     offset: page,
     limit: perPage,
     orderBy: [
     ['id', 'DESC']
     ],
-    include: [
-    {
-      model: models.REWARDS,
-      attributes: ['id', 'name']
-    },
-    {
-      model: models.STORES,
-      attributes: ['id', 'name', 'phone'],
-      include: [
-      {
-        model: models.STORE_TYPES,
-        attributes: ['id', 'name']
-      },
-      {
-        model: models.USERS_STORES,
-        include: [
-        {
-          model: models.USERS
-        }
-        ]
-      }
-      ]
-    }
-    ]
   }).then(function(rec) {
     var routePath = req.route.path;
     var pageCount = Math.ceil(rec.count / perPage)

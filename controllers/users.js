@@ -11,7 +11,7 @@ exports.all = (req, res) => {
 
   var routePath = req.route.path;
   console.log('ROUTE PATH ======>', routePath);
-  if (routePath == '/admins'){
+  if (routePath == '/managers'){
     req.body.role = 1;
   }
   if (routePath == '/viewers'){
@@ -62,7 +62,7 @@ exports.all = (req, res) => {
 
 exports.create = function(req, res) {
   var routePath = req.route.path;
-  if (routePath == '/admins'){
+  if (routePath == '/managers'){
     req.body.role = 1;
   }
   if (routePath == '/viewers'){
@@ -127,8 +127,8 @@ exports.update = function(req, res) {
           var routePath = req.route.path;
           console.log('user ===> ', routePath);
           var role = '';
-          if (routePath == '/admins/:id'){
-            role = 'admin';
+          if (routePath == '/managers/:id'){
+            role = 'manager';
           }
           if (routePath == '/viewers/:id'){
             role = 'viewers';
@@ -167,7 +167,7 @@ exports.update = function(req, res) {
 exports.get = function(req, res) {
   var routePath = req.route.path;
   console.log('route path', routePath);
-  if (routePath == '/admins/:id'){
+  if (routePath == '/managers/:id'){
     req.body.role = 1;
   }
   if (routePath == '/viewers/:id'){
@@ -246,12 +246,12 @@ exports.changePassword = function(req, res){
   })
 }
 
-exports.isAdmin = function(req, res, next){
+exports.isManager = function(req, res, next){
   var token = req.get('token');
   db.User.findOne({
     where: {
       username: req.get('username'),
-      role: 'admin'
+      role: 'manager'
     }
   }).then(function(user){
     if (user){
@@ -265,12 +265,12 @@ exports.isAdmin = function(req, res, next){
       })
     }
     else{
-      return res.jsonp({success: false, err: 'User is not admin'});
+      return res.jsonp({success: false, err: 'User is not manager'});
     }
   })
 }
 
-exports.requiredAdmin = function(req, res, next){
+exports.requiredManager = function(req, res, next){
   var token = req.get('token');
   console.log('TOKEN ##########', token);
 
@@ -402,7 +402,7 @@ exports.isAuth = function(req,res){
   });
 }
 
-exports.isAdmin = function(req,res){
+exports.isManager = function(req,res){
   console.log('req params, ', req.params.token);
   models.USERS.findOne({
     where: {
@@ -415,7 +415,7 @@ exports.isAdmin = function(req,res){
   });
 }
 
-exports.isViewer = function(req,res){
+exports.isRegional = function(req,res){
   console.log('req params, ', req.params.token);
   models.USERS.findOne({
     where: {

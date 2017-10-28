@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     points: DataTypes.INTEGER,
     imageUrl: DataTypes.STRING,
-    status: DataTypes.BOOLEAN
+    status: DataTypes.BOOLEAN,
+    sku: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
@@ -16,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         });
         DISPLAYS.hasMany(models.STORE_POINTS, {
           foreignKey: 'displayIdStorePoints'
+        });
+        DISPLAYS.hasMany(models.CONDITIONS, {
+          foreignKey: 'displayIdConditions'
         });
       }
     }

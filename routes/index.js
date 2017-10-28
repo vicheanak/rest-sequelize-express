@@ -10,6 +10,9 @@ var stores = require('../controllers/stores');
 var users = require('../controllers/users');
 var usersStores = require('../controllers/users_stores');
 var storeImages = require('../controllers/store_images');
+var regions = require('../controllers/regions');
+var conditions = require('../controllers/conditions');
+var issues = require('../controllers/issues');
 var multer = require('multer');
 var appRoot = require('app-root-path');
 var sharp = require('sharp');
@@ -92,25 +95,35 @@ router.get('/users/:id', cors(), users.get);
 router.post('/users', cors(), users.create);
 router.put('/users/:id', cors(), users.update);
 
-router.get('/admins', cors(), users.all);
-router.get('/admins/:id', cors(), users.get);
-router.post('/admins', cors(), users.create);
-router.put('/admins/:id', cors(), users.update);
+router.get('/managers', cors(), users.all);
+router.get('/managers/:id', cors(), users.get);
+router.post('/managers', cors(), users.create);
+router.put('/managers/:id', cors(), users.update);
 
-router.get('/viewers', cors(), users.all);
-router.get('/viewers/:id', cors(), users.get);
-router.post('/viewers', cors(), users.create);
-router.put('/viewers/:id', cors(), users.update);
+router.get('/regionals', cors(), users.all);
+router.get('/regionals/:id', cors(), users.get);
+router.post('/regionals', cors(), users.create);
+router.put('/regionals/:id', cors(), users.update);
 
 router.get('/auditors', cors(), users.all);
 router.get('/auditors/:id', cors(), users.get);
 router.post('/auditors', cors(), users.create);
 router.put('/auditors/:id', cors(), users.update);
 
+router.get('/regions', cors(), regions.all);
+router.get('/regions/:id', cors(), regions.get);
+router.post('/regions', cors(), regions.create);
+router.put('/regions/:id', cors(), regions.update);
+
+router.get('/conditions', cors(), conditions.all);
+router.get('/conditions/:id', cors(), conditions.get);
+router.post('/conditions', cors(), conditions.create);
+router.put('/conditions/:id', cors(), conditions.update);
+
 router.put('/logout', cors(), users.logout);
 router.get('/is_auth/:token', cors(), users.isAuth);
-router.get('/is_admin/:token', cors(), users.isAdmin);
-router.get('/is_viewer/:token', cors(), users.isViewer);
+router.get('/is_manager/:token', cors(), users.isManager);
+router.get('/is_regional/:token', cors(), users.isRegional);
 router.get('/is_auditor/:token', cors(), users.isAuditor);
 
 router.put('/auth', cors(), users.authenticate);
@@ -123,7 +136,7 @@ router.get('/users_stores/stores/:id', cors(), usersStores.getByStore);
 router.post('/users_stores', cors(), usersStores.create);
 router.put('/users_stores/:id', cors(), usersStores.update);
 
-
+router.get('/store_images/', cors(), storeImages.all);
 router.get('/store_images/stores/:id', cors(), storeImages.getByStore);
 router.post('/store_images', cors(), storeImages.create);
 router.put('/store_images/:id', cors(), storeImages.update);
