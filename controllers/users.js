@@ -14,7 +14,7 @@ exports.all = (req, res) => {
   if (routePath == '/managers'){
     req.body.role = 1;
   }
-  if (routePath == '/viewers'){
+  if (routePath == '/regionals'){
     req.body.role = 2;
   }
   if (routePath == '/auditors'){
@@ -24,6 +24,9 @@ exports.all = (req, res) => {
   var query = {
     offset: page,
     limit: perPage,
+    include: [{
+      model: models.REGIONS
+    }],
     orderBy: [
     ['id', 'DESC']
     ],
@@ -65,7 +68,7 @@ exports.create = function(req, res) {
   if (routePath == '/managers'){
     req.body.role = 1;
   }
-  if (routePath == '/viewers'){
+  if (routePath == '/regionals'){
     req.body.role = 2;
   }
   if (routePath == '/auditors'){
@@ -83,7 +86,8 @@ exports.create = function(req, res) {
         phone: req.body.phone,
         token: req.body.token,
         role: req.body.role,
-        status: req.body.status
+        status: req.body.status,
+        regionIdUsers: req.body.regionId
       }).then(function(user){
         if (req.body.storeIds){
           var usersStores = [];
@@ -109,7 +113,8 @@ exports.update = function(req, res) {
   var data = {
     fullname: req.body.fullname,
     phone: req.body.phone,
-    status: req.body.status
+    status: req.body.status,
+    regionIdUsers: req.body.regionId
   };
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(req.body.password, salt, function (err, hash) {
@@ -130,8 +135,8 @@ exports.update = function(req, res) {
           if (routePath == '/managers/:id'){
             role = 'manager';
           }
-          if (routePath == '/viewers/:id'){
-            role = 'viewers';
+          if (routePath == '/regionals/:id'){
+            role = 'regionals';
           }
           if (routePath == '/auditors/:id'){
             role = 'auditors';
@@ -170,7 +175,7 @@ exports.get = function(req, res) {
   if (routePath == '/managers/:id'){
     req.body.role = 1;
   }
-  if (routePath == '/viewers/:id'){
+  if (routePath == '/regionals/:id'){
     req.body.role = 2;
   }
   if (routePath == '/auditors/:id'){
@@ -181,6 +186,9 @@ exports.get = function(req, res) {
     include: [{
       model: models.USERS_STORES,
       attributes: ['storeIdUsersStores']
+    },{
+      model: models.REGIONS,
+      attributes: ['id', 'name']
     }],
     where: {
       id: req.params.id,

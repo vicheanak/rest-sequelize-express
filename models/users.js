@@ -24,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         USERS.hasMany(models.USERS_STORES, {
           foreignKey: 'userIdUsersStores'
         });
+        USERS.hasMany(models.ISSUES, {
+          foreignKey: 'userIdIssues'
+        });
         USERS.belongsTo(models.REGIONS, {
           foreignKey: 'regionIdUsers'
         });

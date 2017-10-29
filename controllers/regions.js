@@ -40,7 +40,6 @@ exports.all = (req, res) => {
       },
       'records': rec.rows
     }
-
     return res.jsonp(result);
   });
 };

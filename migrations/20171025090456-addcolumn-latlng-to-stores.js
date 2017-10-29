@@ -4,11 +4,11 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return [
     queryInterface.addColumn('STOREs', 'lat',{
-      type: Sequelize.DECIMAL,
+      type: Sequelize.DECIMAL(10,5),
       allowNull: true
     }),
     queryInterface.addColumn('STOREs', 'lng',{
-      type: Sequelize.DECIMAL,
+      type: Sequelize.DECIMAL(10,5),
       allowNull: true
     })
     ]

@@ -67,16 +67,17 @@ exports.create = function(req, res) {
     .then((data) =>{
       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
         models.DISPLAYS.create({
-         name: req.body.name,
-         points: req.body.points,
-         imageUrl: req.protocol + '://' + req.headers.host + filePath,
-         storeTypeIdDisplays: req.body.storeTypeId,
-         displayTypeIdDisplays: req.body.displayTypeId,
-         status: req.body.status
-       }).then(function(result) {
-        return res.jsonp(result);
+          sku: req.body.sku,
+          name: req.body.name,
+          points: req.body.points,
+          imageUrl: req.protocol + '://' + req.headers.host + filePath,
+          storeTypeIdDisplays: req.body.storeTypeId,
+          displayTypeIdDisplays: req.body.displayTypeId,
+          status: req.body.status
+        }).then(function(result) {
+          return res.jsonp(result);
+        });
       });
-     });
     })
     .catch((err) => {
       console.log('error', err);
@@ -97,13 +98,14 @@ exports.update = function(req, res) {
       .then((data) =>{
         fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
          models.DISPLAYS.update({
-           name: req.body.name,
-           points: req.body.points,
-           imageUrl: req.headers.host + filePath,
-           storeTypeIdDisplays: req.body.storeTypeId,
-           displayTypeIdDisplays: req.body.displayTypeId,
-           status: req.body.status
-         },{
+          sku: req.body.sku,
+          name: req.body.name,
+          points: req.body.points,
+          imageUrl: req.protocol + '://' + req.headers.host + filePath,
+          storeTypeIdDisplays: req.body.storeTypeId,
+          displayTypeIdDisplays: req.body.displayTypeId,
+          status: req.body.status
+        },{
           where: {
             id: req.params.id
           }

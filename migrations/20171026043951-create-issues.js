@@ -11,6 +11,12 @@ module.exports = {
       url: {
         type: Sequelize.STRING
       },
+      application: {
+        type: Sequelize.STRING
+      },
+      device: {
+        type: Sequelize.STRING
+      },
       topic: {
         type: Sequelize.STRING
       },
@@ -18,9 +24,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
-      imageUrl: {
+      screenshot: {
         type: Sequelize.STRING
       },
       createdAt: {

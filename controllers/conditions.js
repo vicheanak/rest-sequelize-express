@@ -8,13 +8,13 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
+    ['id', 'DESC']
     ],
     include: [
-      {
-        model: models.CONDITIONS,
-        attributes: ['id', 'name', 'imageUrl', 'points', 'status']
-      }
+    {
+      model: models.DISPLAYS,
+      attributes: ['id', 'name', 'imageUrl', 'points', 'status']
+    }
     ]
   };
   if (req.query.display_status){
@@ -37,11 +37,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows
@@ -54,7 +54,7 @@ exports.all = (req, res) => {
 exports.create = function(req, res) {
   models.CONDITIONS.create({
     name: req.body.name,
-    status: req.body.status
+    displayIdConditions: req.body.displayId
   }).then(function(result) {
     return res.jsonp(result);
   });
@@ -62,22 +62,28 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
   models.CONDITIONS.update({
-    name: req.body.name,
-    status: req.body.status
-  },{
-    where: {
-      id: req.params.id
-    }
-  }).then(function(result) {
-    return res.jsonp(result);
-  });
+   name: req.body.name,
+   displayIdConditions: req.body.displayId
+ },{
+  where: {
+    id: req.params.id
+  }
+}).then(function(result) {
+  return res.jsonp(result);
+});
 };
 
 exports.get = function(req, res) {
   models.CONDITIONS.find({
     where: {
       id: req.params.id
-    }
+    },
+    include: [{
+      model: models.DISPLAYS,
+      include: [{
+        model: models.DISPLAY_TYPES
+      }]
+    }]
   }).then(function(result) {
     return res.jsonp(result);
   });

@@ -12,7 +12,11 @@ exports.all = (req, res) => {
     include: [
     {
       model: models.STORE_TYPES,
-      attributes: ['id', 'name', 'status']
+      attributes: ['id', 'name']
+    },
+    {
+      model: models.REGIONS,
+      attributes: ['id', 'name']
     }
     ],
     offset: page,
@@ -51,52 +55,39 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-  console.log('store type id ######', req.body.storeTypeId);
-  bcrypt.genSalt(10, function (err, salt) {
-    bcrypt.hash(req.body.password, salt, function (err, hash) {
-      req.body.password = hash;
-      var token = jwt.encode(uuid.v4(), secret);
-      req.body.token = token;
-      models.STORES.create({
-        name: req.body.name,
-        location: req.body.location,
-        phone: req.body.phone,
-        status: req.body.status,
-        username: req.body.username,
-        password: req.body.password,
-        token: req.body.token,
-        storeTypeIdStores: req.body.storeTypeId
-      }).then(function(result) {
-        console.log(result.id);
-        return res.jsonp(result);
-      });
-    });
+  models.STORES.create({
+    name: req.body.name,
+    location: req.body.location,
+    phone: req.body.phone,
+    status: req.body.status,
+    storeTypeIdStores: req.body.storeTypeId,
+    regionIdStores: req.body.regionId,
+    lat: req.body.lat,
+    lng: req.body.lng
+  }).then(function(result) {
+    console.log(result.id);
+    return res.jsonp(result);
   });
 };
 
 exports.update = function(req, res) {
+  console.log('lat, lng =======> ', req.body.lat, req.body.lng);
   var data = {
     name: req.body.name,
     location: req.body.location,
     phone: req.body.phone,
     status: req.body.status,
-    storeTypeIdStores: req.body.storeTypeIdStores
+    storeTypeIdStores: req.body.storeTypeId,
+    regionIdStores: req.body.regionId,
+    lat: req.body.lat,
+    lng: req.body.lng
   };
-  console.log('data password', req.body);
-  bcrypt.genSalt(10, function (err, salt) {
-    bcrypt.hash(req.body.password, salt, function (err, hash) {
-      if (req.body.password){
-        data.password = hash;
-      }
-      console.log('data ====== ', data);
-      models.STORES.update(data,{
-        where: {
-          id: req.params.id
-        }
-      }).then(function(store){
-        return res.jsonp(store);
-      });
-    });
+  models.STORES.update(data,{
+    where: {
+      id: req.params.id
+    }
+  }).then(function(store){
+    return res.jsonp(store);
   });
 }
 
