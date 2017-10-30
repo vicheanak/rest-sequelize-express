@@ -84,6 +84,7 @@ router.post('/store_types', cors(), storeTypes.create);
 router.put('/store_types/:id', storeTypes.update);
 
 router.get('/stores', cors(), stores.all);
+router.get('/stores/reports', cors(), stores.reports);
 router.get('/stores/:id', cors(), stores.get);
 router.post('/stores', cors(), stores.create);
 router.put('/stores/:id', stores.update);
@@ -119,6 +120,11 @@ router.get('/conditions', cors(), conditions.all);
 router.get('/conditions/:id', cors(), conditions.get);
 router.post('/conditions', cors(), conditions.create);
 router.put('/conditions/:id', cors(), conditions.update);
+
+router.get('/issues', cors(), issues.all);
+router.get('/issues/:id', cors(), issues.get);
+router.post('/issues', cors(), issues.create);
+router.put('/issues/:id', cors(), issues.update);
 
 router.put('/logout', cors(), users.logout);
 router.get('/is_auth/:token', cors(), users.isAuth);

@@ -26,8 +26,23 @@ module.exports = {
       status: {
         type: Sequelize.STRING
       },
-      screenshot: {
+      priority: {
+        type: Sequelize.INTEGER
+      },
+      imageUrl: {
         type: Sequelize.STRING
+      },
+      issueType: {
+        type: Sequelize.STRING
+      },
+      issuedAt:{
+        type: Sequelize.DATE
+      },
+      fixedAt: {
+        type: Sequelize.DATE
+      },
+      closedAt: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

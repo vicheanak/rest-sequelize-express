@@ -4,6 +4,9 @@ var fs = require('fs');
 var appRoot = require('app-root-path');
 var uuid = require('uuid/v4');
 var sharp = require('sharp');
+var moment = require('moment');
+
+
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -15,6 +18,20 @@ exports.all = (req, res) => {
     limit: perPage,
     orderBy: [
     ['id', 'DESC']
+    ],
+    include: [
+    {
+      model: models.USERS,
+      as: 'issuedBy'
+    },
+    {
+      model: models.USERS,
+      as: 'fixedBy'
+    },
+    {
+      model: models.USERS,
+      as: 'closedBy'
+    }
     ]
   };
 
@@ -53,18 +70,27 @@ exports.create = function(req, res) {
   var fileUuid = uuid();
   var base64Data = req.body.imageUrl;
   var filePath = "/public/uploads/"+fileUuid+".png";
+  var now = moment().format("YYYY-MM-DD HH:mm:ss");
   fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
     if (err) console.log(err);
     sharp(appRoot+filePath)
     .resize(500)
     .toBuffer()
     .then((data) =>{
+      console.log('now =====> ', now);
       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
         models.ISSUES.create({
-          name: req.body.name,
-          points: req.body.points,
+          application: req.body.application,
+          url: req.body.url,
+          device: req.body.device,
+          priority: req.body.priority,
+          topic: req.body.topic,
+          description: req.body.description,
           imageUrl: req.protocol + '://' + req.headers.host + filePath,
-          status: req.body.status
+          status: 'Open',
+          issueType: req.body.issueType,
+          issuedAt: now,
+          issuedById: req.body.issuedById
         }).then(function(result) {
           return res.jsonp(result);
         });
@@ -89,11 +115,18 @@ exports.update = function(req, res) {
       .then((data) =>{
         fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
          models.ISSUES.update({
-           name: req.body.name,
-           points: req.body.points,
-           imageUrl: req.protocol + '://' + req.headers.host + filePath,
-           status: req.body.status
-         },{
+          application: req.body.application,
+          url: req.body.url,
+          device: req.body.device,
+          priority: req.body.priority,
+          topic: req.body.topic,
+          description: req.body.description,
+          imageUrl: req.protocol + '://' + req.headers.host + filePath,
+          status: req.body.status,
+          issueType: req.body.issueType,
+          issuedAt: now,
+          issuedById: req.body.issuedById
+        },{
           where: {
             id: req.params.id
           }
@@ -124,6 +157,20 @@ exports.update = function(req, res) {
 
 exports.get = function(req, res) {
   models.ISSUES.find({
+    include: [
+    {
+      model: models.USERS,
+      as: 'issuedBy'
+    },
+    {
+      model: models.USERS,
+      as: 'fixedBy'
+    },
+    {
+      model: models.USERS,
+      as: 'closedBy'
+    }
+    ],
     where: {
       id: req.params.id
     }

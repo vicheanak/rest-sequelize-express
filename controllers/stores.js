@@ -106,6 +106,66 @@ exports.get = function(req, res) {
   });
 }
 
+exports.reports = (req, res) => {
+  var page = req.query.page ? req.query.page : 1;
+  page = parseInt(page) - 1;
+  var perPage = req.query.per_page ? req.query.per_page : 30;
+  var query = {
+    include: [
+    {
+      model: models.STORE_TYPES,
+      attributes: ['id', 'name']
+    },
+    {
+      model: models.REGIONS,
+      attributes: ['id', 'name']
+    },
+    {
+      model: models.STORE_IMAGES
+    }
+    ],
+    attributes: [
+    'id',
+    'name',
+    'phone',
+    'storeTypeIdStores',
+    'regionIdStores'
+    ],
+    offset: page,
+    limit: perPage,
+    orderBy: [
+    ['id', 'DESC']
+    ]
+  };
+  if (req.query.status){
+    query.where = {
+      status: true
+    }
+  }
+  models.STORES.findAndCountAll(query).then(function(rec) {
+    var routePath = req.route.path;
+    var pageCount = Math.ceil(rec.count / perPage)
+    var result = {
+      '_metadata': {
+        'page': rec.length,
+        'per_page': perPage,
+        'page_count': pageCount,
+        'total_count': rec.count,
+        'Links': [
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        ]
+      },
+      'records': rec.rows
+    }
+
+    return res.jsonp(result);
+  });
+};
+
 exports.isAuth = function(req,res){
   console.log('req params, ', req.params.token);
   models.STORES.findOne({
