@@ -110,6 +110,7 @@ router.get('/auditors', cors(), users.all);
 router.get('/auditors/:id', cors(), users.get);
 router.post('/auditors', cors(), users.create);
 router.put('/auditors/:id', cors(), users.update);
+router.put('/auditors/changepassword/:id', cors(), users.changePassword);
 
 router.get('/regions', cors(), regions.all);
 router.get('/regions/:id', cors(), regions.get);
@@ -117,6 +118,7 @@ router.post('/regions', cors(), regions.create);
 router.put('/regions/:id', cors(), regions.update);
 
 router.get('/conditions', cors(), conditions.all);
+router.get('/conditions/displays/:id', cors(), conditions.allDisplay);
 router.get('/conditions/:id', cors(), conditions.get);
 router.post('/conditions', cors(), conditions.create);
 router.put('/conditions/:id', cors(), conditions.update);

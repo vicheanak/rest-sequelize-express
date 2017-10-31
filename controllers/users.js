@@ -165,9 +165,8 @@ exports.update = function(req, res) {
         });
       });
   });
-
-
 };
+
 
 exports.get = function(req, res) {
   var routePath = req.route.path;
@@ -209,9 +208,9 @@ exports.changePassword = function(req, res){
   console.log('oldPassword', req.body.oldPassword);
   console.log('newPassword', req.body.newPassword);
 
-  db.User.findOne({
+  models.USERS.findOne({
     where: {
-      username: req.get('username')
+      id: req.params.id
     }
   }).then(function(user){
     if (user){
@@ -228,17 +227,7 @@ exports.changePassword = function(req, res){
               }).then(function(a){
                 return res.jsonp(a);
               }).catch(function(err){
-                db.User.find({
-                  where: {
-                    id: user.id
-                  }
-                }).then(function(user){
-                  var error = {
-                    error: err,
-                    data: user
-                  }
-                  return res.jsonp(error);
-                });
+                return res.jsonp(err);
               });
             });
           });
@@ -475,7 +464,7 @@ exports.authenticate = function(req,res){
       })
     }
     else{
-      return res.jsonp({err: "Username does Not Exist or Inactive"});
+      return res.jsonp({err: "ឈ្មោះបញ្ចូលមិនត្រឹមត្រូវ"});
     }
   })
 }
@@ -500,12 +489,12 @@ exports.authAuditor = function(req,res){
           });
         }
         else{
-          res.jsonp({err: "Incorrect Password"});
+          res.jsonp({err: "លេខសំងាត់មិនត្រឹមត្រូវ"});
         }
       })
     }
     else{
-      return res.jsonp({err: "Username does Not Exist or Inactive"});
+      return res.jsonp({err: "ឈ្មោះបញ្ចូលមិនត្រឹមត្រូវ"});
     }
   })
 }

@@ -51,6 +51,21 @@ exports.all = (req, res) => {
   });
 };
 
+exports.allDisplay = (req, res) => {
+  var query = {
+    orderBy: [
+    ['id', 'DESC']
+    ],
+    where: {
+      displayIdConditions: req.params.id
+    }
+  };
+
+  models.CONDITIONS.findAll(query).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
 exports.create = function(req, res) {
   models.CONDITIONS.create({
     name: req.body.name,

@@ -50,13 +50,13 @@ exports.create = function(req, res) {
   .then((data) =>{
     fs.writeFile(appRootFilePath, data, 'base64', function(err) {
       var now = moment().format("YYYY-MM-DD HH:mm:ss");
-      console.log('now', now);
-      console.log('imageUrl', req.headers.host + filePath);
-      console.log('storeIdStoreImages', req.body.storeIdStoreImages);
+      console.log('BODY ====> ', req.body);
       models.STORE_IMAGES.create({
         capturedAt: now,
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
-        storeIdStoreImages: req.body.storeIdStoreImages
+        storeIdStoreImages: req.body.storeIdStoreImages,
+        lat: req.body.lat,
+        lng: req.body.lng
       }).then(function(result) {
         return res.jsonp(result);
       });

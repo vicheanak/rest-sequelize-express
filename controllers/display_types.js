@@ -13,7 +13,7 @@ exports.all = (req, res) => {
     include: [
       {
         model: models.DISPLAYS,
-        attributes: ['id', 'name', 'imageUrl', 'points', 'status']
+        attributes: ['id', 'name', 'imageUrl', 'points', 'status', 'sku']
       }
     ]
   };

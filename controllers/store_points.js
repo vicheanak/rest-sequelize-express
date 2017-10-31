@@ -93,7 +93,8 @@ exports.create = function(req, res) {
         storeIdStorePoints: req.body.storeIdStorePoints,
         userIdStorePoints: req.body.userIdStorePoints,
         displayIdStorePoints: req.body.displayIdStorePoints,
-        storeImageIdStorePoints: req.body.storeImageIdStorePoints
+        storeImageIdStorePoints: req.body.storeImageIdStorePoints,
+        conditionIdStorePoints: req.body.conditionIdStorePoints
       }).then(function(result) {
         return res.jsonp(result);
       });
@@ -132,6 +133,9 @@ exports.getStore = function(req, res){
   include: [
   {
     model: models.DISPLAYS
+  },
+  {
+    model: models.CONDITIONS
   }
   ]
 }).then(function(result) {
