@@ -17,7 +17,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
     include: [
     {
@@ -80,6 +80,7 @@ exports.create = function(req, res) {
       console.log('now =====> ', now);
       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
         models.ISSUES.create({
+          id: uuid(),
           application: req.body.application,
           url: req.body.url,
           device: req.body.device,

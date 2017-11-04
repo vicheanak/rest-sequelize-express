@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return [
     queryInterface.addColumn('ISSUEs', 'issuedById', {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true,
       references: {
         model: 'USERs',
@@ -12,7 +12,7 @@ module.exports = {
       }
     }),
     queryInterface.addColumn('ISSUEs', 'fixedById', {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true,
       references: {
         model: 'USERs',
@@ -20,7 +20,7 @@ module.exports = {
       }
     }),
     queryInterface.addColumn('ISSUEs', 'closedById', {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       allowNull: true,
       references: {
         model: 'USERs',

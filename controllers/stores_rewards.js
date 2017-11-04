@@ -1,4 +1,5 @@
 var models  = require('../models');
+var uuid = require('uuid/v4');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -8,7 +9,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
     include: [
     {
@@ -19,18 +20,18 @@ exports.all = (req, res) => {
       model: models.STORES,
       attributes: ['id', 'name', 'phone'],
       include: [
+      {
+        model: models.STORE_TYPES,
+        attributes: ['id', 'name']
+      },
+      {
+        model: models.USERS_STORES,
+        include: [
         {
-          model: models.STORE_TYPES,
-          attributes: ['id', 'name']
-        },
-        {
-          model: models.USERS_STORES,
-          include: [
-          {
-            model: models.USERS
-          }
-          ]
+          model: models.USERS
         }
+        ]
+      }
       ]
     }
     ]
@@ -60,7 +61,12 @@ exports.all = (req, res) => {
 
 exports.create = function(req, res) {
   models.STORES_REWARDS.create({
-    name: req.body.name
+    id: uuid(),
+    status: req.body.status,
+    points: req.body.points,
+    imageUrl: req.body.imageUrl,
+    deliveriedAt: req.body.deliveriedAt,
+    uploaded: req.body.uploaded
   }).then(function(result) {
     return res.jsonp(result);
   });
@@ -68,14 +74,18 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
   models.STORES_REWARDS.update({
-    name: req.body.name
-  },{
-    where: {
-      id: req.params.id
-    }
-  }).then(function(result) {
-    return res.jsonp(result);
-  });
+   status: req.body.status,
+   points: req.body.points,
+   imageUrl: req.body.imageUrl,
+   deliveriedAt: req.body.deliveriedAt,
+   uploaded: req.body.uploaded
+ },{
+  where: {
+    id: req.params.id
+  }
+}).then(function(result) {
+  return res.jsonp(result);
+});
 };
 
 exports.get = function(req, res) {

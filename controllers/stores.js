@@ -1,7 +1,7 @@
 var models  = require('../models');
 var bcrypt = require('bcrypt');
 var jwt  = require('jwt-simple');
-var uuid = require('uuid');
+var uuid = require('uuid/v4');
 var secret = require('../config/secret');
 
 exports.all = (req, res) => {
@@ -22,7 +22,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ]
   };
   if (req.query.status){
@@ -30,38 +30,43 @@ exports.all = (req, res) => {
       status: true
     }
   }
-  models.STORES.findAndCountAll(query).then(function(rec) {
-    var routePath = req.route.path;
-    var pageCount = Math.ceil(rec.count / perPage)
-    var result = {
-      '_metadata': {
-        'page': rec.length,
-        'per_page': perPage,
-        'page_count': pageCount,
-        'total_count': rec.count,
-        'Links': [
-        {'self': routePath+'?page='+page+'&per_page='+perPage},
-        {'first': routePath+'?page=1&per_page='+perPage},
-        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
-        ]
-      },
-      'records': rec.rows
-    }
-
+  models.STORES.findAll(query).then(function(result) {
     return res.jsonp(result);
   });
+  // models.STORES.findAndCountAll(query).then(function(rec) {
+  //   var routePath = req.route.path;
+  //   var pageCount = Math.ceil(rec.count / perPage)
+  //   var result = {
+  //     '_metadata': {
+  //       'page': rec.length,
+  //       'per_page': perPage,
+  //       'page_count': pageCount,
+  //       'total_count': rec.count,
+  //       'Links': [
+  //       {'self': routePath+'?page='+page+'&per_page='+perPage},
+  //       {'first': routePath+'?page=1&per_page='+perPage},
+  //       {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+  //       {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+  //       {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+  //       ]
+  //     },
+  //     'records': rec.rows
+  //   }
+
+  //   return res.jsonp(result);
+  // });
 };
 
 exports.create = function(req, res) {
   models.STORES.create({
+    id: req.body.uuid,
     name: req.body.name,
     location: req.body.location,
     phone: req.body.phone,
     status: req.body.status,
     storeTypeIdStores: req.body.storeTypeId,
     regionIdStores: req.body.regionId,
+    uploaded: req.body.uploaded,
     lat: req.body.lat,
     lng: req.body.lng
   }).then(function(result) {
@@ -79,6 +84,7 @@ exports.update = function(req, res) {
     status: req.body.status,
     storeTypeIdStores: req.body.storeTypeId,
     regionIdStores: req.body.regionId,
+    uploaded: req.body.uploaded,
     lat: req.body.lat,
     lng: req.body.lng
   };
@@ -134,7 +140,7 @@ exports.reports = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ]
   };
   if (req.query.status){

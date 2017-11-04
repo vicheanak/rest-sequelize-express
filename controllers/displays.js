@@ -13,7 +13,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
     include: [
     {
@@ -67,6 +67,7 @@ exports.create = function(req, res) {
     .then((data) =>{
       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
         models.DISPLAYS.create({
+          id: uuid(),
           sku: req.body.sku,
           name: req.body.name,
           points: req.body.points,

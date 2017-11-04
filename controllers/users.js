@@ -1,7 +1,7 @@
 var models  = require('../models');
 var bcrypt = require('bcrypt');
 var jwt  = require('jwt-simple');
-var uuid = require('uuid');
+var uuid = require('uuid/v4');
 var secret = require('../config/secret');
 
 exports.all = (req, res) => {
@@ -28,7 +28,7 @@ exports.all = (req, res) => {
       model: models.REGIONS
     }],
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
     where: {
       role: req.body.role
@@ -80,6 +80,7 @@ exports.create = function(req, res) {
       var token = jwt.encode(uuid.v4(), secret);
       req.body.token = token;
       models.USERS.create({
+        id: uuid(),
         fullname: req.body.fullname,
         username:req.body.username,
         password:req.body.password,

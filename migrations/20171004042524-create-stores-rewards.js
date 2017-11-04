@@ -4,11 +4,13 @@ module.exports = {
     return queryInterface.createTable('STORES_REWARDs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       status: {
+        type: Sequelize.INTEGER
+      },
+      points: {
         type: Sequelize.INTEGER
       },
       imageUrl:{
@@ -16,6 +18,9 @@ module.exports = {
       },
       deliveriedAt: {
         type: Sequelize.DATE
+      },
+      uploaded: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

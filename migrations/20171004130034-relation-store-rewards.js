@@ -2,9 +2,9 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('STORES_REWARDs', 'storeIdStoresRewards', 
+    return queryInterface.addColumn('STORES_REWARDs', 'storeIdStoresRewards',
         {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           allowNull: true,
           references: {
             model: 'STOREs',
@@ -12,7 +12,7 @@ module.exports = {
           }
         }
       )
-    
+
   },
 
   down: (queryInterface, Sequelize) => {

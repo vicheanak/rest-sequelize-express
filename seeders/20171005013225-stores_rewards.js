@@ -4,12 +4,78 @@ module.exports = {
   up: function (queryInterface, Sequelize) {
     var now = moment().format("YYYY-MM-DD HH:mm:ss");
     var data = [
-      {id: 1, status: 1, imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg', deliveriedAt: now, points: 500, createdAt: now, updatedAt: now, storeIdStoresRewards: 1, rewardIdStoresRewards: 1},
-      {id: 2, status: 1, imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg', deliveriedAt: now, points: 500, createdAt: now, updatedAt: now, storeIdStoresRewards: 1, rewardIdStoresRewards: 2},
-      {id: 3, status: 2, imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg', deliveriedAt: null, points: 500, createdAt: now, updatedAt: now, storeIdStoresRewards: 1, rewardIdStoresRewards: 3},
-      {id: 4, status: 1, imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg', deliveriedAt: null, points: 500, createdAt: now, updatedAt: now, storeIdStoresRewards: 2, rewardIdStoresRewards: 1},
-      {id: 5, status: 1, imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg', deliveriedAt: null, points: 500, createdAt: now, updatedAt: now, storeIdStoresRewards: 2, rewardIdStoresRewards: 2},
-      {id: 6, status: 2, imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg', deliveriedAt: null, points: 500, createdAt: now, updatedAt: now, storeIdStoresRewards: 2, rewardIdStoresRewards: 3},
+      {
+        id: '1db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        status: 1,
+        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        deliveriedAt: now,
+        points: 500,
+        uploaded: true,
+        createdAt: now,
+        updatedAt: now,
+        storeIdStoresRewards: '1db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        rewardIdStoresRewards: '1db8bc1a-c118-11e7-abc4-cec278b6b50a'
+      },
+      {
+        id: '2db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        status: 1,
+        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        deliveriedAt: now,
+        points: 500,
+        uploaded: true,
+        createdAt: now,
+        updatedAt: now,
+        storeIdStoresRewards: '1db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        rewardIdStoresRewards: '2db8bc1a-c118-11e7-abc4-cec278b6b50a'
+      },
+      {
+        id: '3db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        status: 2,
+        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        deliveriedAt: null,
+        points: 500,
+        uploaded: true,
+        createdAt: now,
+        updatedAt: now,
+        storeIdStoresRewards: '1db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        rewardIdStoresRewards: '3db8bc1a-c118-11e7-abc4-cec278b6b50a'
+      },
+      {
+        id: '4db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        status: 1,
+        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        deliveriedAt: null,
+        points: 500,
+        uploaded: true,
+        createdAt: now,
+        updatedAt: now,
+        storeIdStoresRewards: '2db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        rewardIdStoresRewards: '1db8bc1a-c118-11e7-abc4-cec278b6b50a'
+      },
+      {
+        id: '5db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        status: 1,
+        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        deliveriedAt: null,
+        points: 500,
+        uploaded: true,
+        createdAt: now,
+        updatedAt: now,
+        storeIdStoresRewards: '2db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        rewardIdStoresRewards: '2db8bc1a-c118-11e7-abc4-cec278b6b50a'
+      },
+      {
+        id: '6db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        status: 2,
+        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        deliveriedAt: null,
+        points: 500,
+        uploaded: true,
+        createdAt: now,
+        updatedAt: now,
+        storeIdStoresRewards: '2db8bc1a-c118-11e7-abc4-cec278b6b50a',
+        rewardIdStoresRewards: '3db8bc1a-c118-11e7-abc4-cec278b6b50a'
+      },
     ];
 
     return queryInterface.bulkInsert('STORES_REWARDs', data);

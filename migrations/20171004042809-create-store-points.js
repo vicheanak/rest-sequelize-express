@@ -4,15 +4,17 @@ module.exports = {
     return queryInterface.createTable('STORE_POINTs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       points: {
         type: Sequelize.INTEGER
       },
       imageUrl: {
         type: Sequelize.STRING
+      },
+      uploaded: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

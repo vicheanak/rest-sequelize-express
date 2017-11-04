@@ -4,15 +4,23 @@ module.exports = {
     return queryInterface.createTable('STORE_IMAGEs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       imageUrl: {
         type: Sequelize.STRING
       },
       capturedAt: {
         type: Sequelize.DATE
+      },
+      uploaded: {
+        type: Sequelize.BOOLEAN
+      },
+      lat: {
+        type: Sequelize.STRING
+      },
+      lng: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

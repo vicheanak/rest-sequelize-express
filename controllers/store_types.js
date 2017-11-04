@@ -1,4 +1,5 @@
 var models  = require('../models');
+var uuid = require('uuid/v4');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -10,7 +11,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ]
   };
   if (req.query.status){
@@ -45,6 +46,7 @@ exports.all = (req, res) => {
 
 exports.create = function(req, res) {
   models.STORE_TYPES.create({
+    id: uuid(),
     name: req.body.name,
     status: req.body.status
   }).then(function(result) {

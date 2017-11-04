@@ -4,9 +4,8 @@ module.exports = {
     return queryInterface.createTable('STORE_TYPEs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       name: {
         type: Sequelize.TEXT

@@ -14,7 +14,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
   }).then(function(rec) {
     var routePath = req.route.path;
@@ -52,6 +52,7 @@ exports.create = function(req, res) {
       var now = moment().format("YYYY-MM-DD HH:mm:ss");
       console.log('BODY ====> ', req.body);
       models.STORE_IMAGES.create({
+        id: uuid(),
         capturedAt: now,
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
         storeIdStoreImages: req.body.storeIdStoreImages,
@@ -78,9 +79,6 @@ exports.update = function(req, res) {
   .then((data) =>{
     fs.writeFile(appRootFilePath, data, 'base64', function(err) {
       var now = moment().format("YYYY-MM-DD HH:mm:ss");
-      console.log('now', now);
-      console.log('imageUrl', req.headers.host + filePath);
-      console.log('storeIdStoreImages', req.body.storeIdStoreImages);
       models.STORE_IMAGES.update({
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
       },{

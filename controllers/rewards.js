@@ -14,7 +14,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ]
   };
 
@@ -61,6 +61,7 @@ exports.create = function(req, res) {
     .then((data) =>{
       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
         models.REWARDS.create({
+          id: uuid(),
           name: req.body.name,
           points: req.body.points,
           imageUrl: req.protocol + '://' + req.headers.host + filePath,

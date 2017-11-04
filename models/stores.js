@@ -9,14 +9,12 @@ var secret = require('../config/secret');
 module.exports = (sequelize, DataTypes) => {
   var STORES = sequelize.define('STORES', {
     name: DataTypes.STRING,
-    location: DataTypes.STRING,
+    address: DataTypes.STRING,
     phone: DataTypes.STRING,
     lat: DataTypes.DECIMAL(10,5),
     lng: DataTypes.DECIMAL(10,5),
     status: DataTypes.BOOLEAN,
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    token: DataTypes.STRING
+    uploaded: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {
@@ -46,36 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     instanceMethods: {
-      toJSON: function () {
-        var values = this.get();
-        delete values.password;
-        delete values.salt;
-        return values;
-      },
-      makeSalt: function() {
-        return bcrypt.randomBytes(16).toString('base64');
-      },
-      authenticate: function(plainText){
-        return this.encryptPassword(plainText, this.salt) === this.password;
-      },
-      encryptPassword: function(password, salt) {
-        if (!password || !salt) {
-          return '';
-        }
-        salt = new Buffer(salt, 'base64');
-        return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
-      },
-      verifyPassword: function(pwd, cb){
-        bcrypt.compare(pwd, this.password, function (err, isMatch) {
-          return cb(err, isMatch);
-        });
-      },
-      verifyToken: function(token, cb){
-        if (token == this.token){
-          return cb(true);
-        }
-        return cb(false);
-      }
     }
   });
   return STORES;

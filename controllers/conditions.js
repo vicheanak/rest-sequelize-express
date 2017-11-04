@@ -1,4 +1,5 @@
 var models  = require('../models');
+var uuid = require('uuid/v4');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -8,7 +9,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
     include: [
     {
@@ -54,7 +55,7 @@ exports.all = (req, res) => {
 exports.allDisplay = (req, res) => {
   var query = {
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ],
     where: {
       displayIdConditions: req.params.id
@@ -68,6 +69,7 @@ exports.allDisplay = (req, res) => {
 
 exports.create = function(req, res) {
   models.CONDITIONS.create({
+    id: uuid(),
     name: req.body.name,
     displayIdConditions: req.body.displayId
   }).then(function(result) {

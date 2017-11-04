@@ -4,29 +4,28 @@ module.exports = {
     return queryInterface.createTable('STOREs', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       name: {
         type: Sequelize.STRING
       },
-      location: {
+      address: {
         type: Sequelize.STRING
       },
       phone: {
         type: Sequelize.STRING
       },
-      username: {
+      lat: {
         type: Sequelize.STRING
       },
-      password: {
-        type: Sequelize.STRING
-      },
-      token: {
+      lng: {
         type: Sequelize.STRING
       },
       status: {
+        type: Sequelize.BOOLEAN
+      },
+      uploaded: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {

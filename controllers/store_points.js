@@ -13,7 +13,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-    ['id', 'DESC']
+    ['createdAt', 'DESC']
     ]
   }).then(function(rec) {
     var routePath = req.route.path;
@@ -39,41 +39,6 @@ exports.all = (req, res) => {
   });
 };
 
-// exports.create = function(req, res) {
-//   var fileUuid = uuid();
-//   var base64Data = req.body.imageUrl;
-//   var filePath = "/public/uploads/"+fileUuid+".png";
-//   fs.writeFile(appRoot+filePath, base64Data, 'base64', function(err) {
-//     if (err) console.log(err);
-//     sharp(appRoot+filePath)
-//     .resize(500)
-//     .toBuffer()
-//     .then((data) =>{
-//       fs.writeFile(appRoot+filePath, data, 'base64', function(err) {
-//         models.STORE_POINTS.create({
-//           points: req.body.name,
-//           imageUrl: req.header.host + filePath,
-//           storeIdStorePoints: req.body.storeIdStorePoints,
-//           userIdStorePoints: req.body.userIdStorePoints,
-//           displayIdStorePoints: req.body.displayIdStorePoints
-//         }).then(function(result) {
-//           return res.jsonp(result);
-//         });
-//       });
-//     })
-//     .catch((err) => {
-//       console.log('error', err);
-//     });
-
-
-//     //fs.readFile(appRoot + filePath, function(err, data) {
-//       //if (err) throw err;
-//       //res.send(data);
-//     //});
-//   });
-
-// };
-
 exports.create = function(req, res) {
 
   var fileName = req.body.fileName;
@@ -88,8 +53,9 @@ exports.create = function(req, res) {
     fs.writeFile(appRootFilePath, data, 'base64', function(err) {
       models.STORE_POINTS.create({
         points: req.body.points,
-        uId: req.body.uId,
+        id: req.body.uuid,
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
+        uploaded: req.body.uploaded,
         storeIdStorePoints: req.body.storeIdStorePoints,
         userIdStorePoints: req.body.userIdStorePoints,
         displayIdStorePoints: req.body.displayIdStorePoints,
@@ -155,7 +121,7 @@ exports.getStoreSum = function(req, res) {
     [models.sequelize.fn('sum', models.sequelize.col('points')), 'total_points']
     ],
     order: [
-    ['id', 'DESC'],
+    ['createdAt', 'DESC'],
     ],
     group: ['storeImageIdStorePoints'],
     include: [

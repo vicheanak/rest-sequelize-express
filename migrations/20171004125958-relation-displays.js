@@ -2,9 +2,9 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('DISPLAYs', 'displayTypeIdDisplays', 
+    return queryInterface.addColumn('DISPLAYs', 'displayTypeIdDisplays',
       {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true,
         references: {
           model: 'DISPLAY_TYPEs',

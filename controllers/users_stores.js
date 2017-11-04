@@ -1,4 +1,5 @@
 var models  = require('../models');
+var uuid = require('uuid/v4');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -8,7 +9,7 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
+      ['createdAt', 'DESC']
     ]
   }).then(function(rec) {
     var routePath = req.route.path;
@@ -42,7 +43,7 @@ exports.getByUser = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['id', 'DESC']
+      ['createdAt', 'DESC']
     ],
     where: {
       userIdUsersStores: req.params.id
@@ -129,6 +130,7 @@ exports.getByStore = (req, res) => {
 
 exports.create = function(req, res) {
   models.USERS_STORES.create({
+    id: uuid(),
     name: req.body.name
   }).then(function(result) {
     return res.jsonp(result);
