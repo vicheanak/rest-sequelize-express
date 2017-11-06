@@ -7,7 +7,7 @@ module.exports = {
       {
         id: '1db8bc1a-c118-11e7-abc4-cec278b6b50a',
         status: 1,
-        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        imageUrl: 'http://192.168.8.104/public/uploads/deliver_slip1.jpg',
         deliveriedAt: now,
         points: 500,
         uploaded: true,
@@ -19,7 +19,7 @@ module.exports = {
       {
         id: '2db8bc1a-c118-11e7-abc4-cec278b6b50a',
         status: 1,
-        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        imageUrl: 'http://192.168.8.104/public/uploads/deliver_slip1.jpg',
         deliveriedAt: now,
         points: 500,
         uploaded: true,
@@ -31,7 +31,7 @@ module.exports = {
       {
         id: '3db8bc1a-c118-11e7-abc4-cec278b6b50a',
         status: 2,
-        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        imageUrl: 'http://192.168.8.104/public/uploads/deliver_slip1.jpg',
         deliveriedAt: null,
         points: 500,
         uploaded: true,
@@ -43,7 +43,7 @@ module.exports = {
       {
         id: '4db8bc1a-c118-11e7-abc4-cec278b6b50a',
         status: 1,
-        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        imageUrl: 'http://192.168.8.104/public/uploads/deliver_slip1.jpg',
         deliveriedAt: null,
         points: 500,
         uploaded: true,
@@ -55,7 +55,7 @@ module.exports = {
       {
         id: '5db8bc1a-c118-11e7-abc4-cec278b6b50a',
         status: 1,
-        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        imageUrl: 'http://192.168.8.104/public/uploads/deliver_slip1.jpg',
         deliveriedAt: null,
         points: 500,
         uploaded: true,
@@ -67,7 +67,7 @@ module.exports = {
       {
         id: '6db8bc1a-c118-11e7-abc4-cec278b6b50a',
         status: 2,
-        imageUrl: 'localhost:8080/img/gallery/deliver_slip1.jpg',
+        imageUrl: 'http://192.168.8.104/public/uploads/deliver_slip1.jpg',
         deliveriedAt: null,
         points: 500,
         uploaded: true,

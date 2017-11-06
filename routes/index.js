@@ -27,6 +27,9 @@ router.get('/display_types', cors(), displayTypes.all);
 router.get('/display_types/:id', cors(), displayTypes.get);
 router.post('/display_types', cors(), displayTypes.create);
 router.put('/display_types/:id', cors(), displayTypes.update);
+router.get('/display_types/store_types/:id', cors(), displayTypes.getStoreType);
+
+
 
 router.get('/displays', cors(), displays.all);
 router.get('/displays/:id', cors(), displays.get);

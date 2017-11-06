@@ -9,13 +9,13 @@ exports.all = (req, res) => {
     offset: page,
     limit: perPage,
     orderBy: [
-      ['createdAt', 'DESC']
+    ['createdAt', 'DESC']
     ],
     include: [
-      {
-        model: models.DISPLAYS,
-        attributes: ['id', 'name', 'imageUrl', 'points', 'status', 'sku']
-      }
+    {
+      model: models.DISPLAYS,
+      attributes: ['id', 'name', 'imageUrl', 'points', 'status', 'sku']
+    }
     ]
   };
   if (req.query.display_status){
@@ -38,11 +38,11 @@ exports.all = (req, res) => {
         'page_count': pageCount,
         'total_count': rec.count,
         'Links': [
-          {'self': routePath+'?page='+page+'&per_page='+perPage},
-          {'first': routePath+'?page=1&per_page='+perPage},
-          {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-          {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-          {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
         ]
       },
       'records': rec.rows
@@ -81,6 +81,29 @@ exports.get = function(req, res) {
       id: req.params.id
     }
   }).then(function(result) {
+    return res.jsonp(result);
+  });
+}
+
+exports.getStoreType = function(req, res) {
+  models.DISPLAY_TYPES.findAll(
+  {
+    include: [
+    {
+      model: models.DISPLAYS,
+      where: {
+        storeTypeIdDisplays: req.params.id
+      },
+      include: [
+        {
+          model: models.CONDITIONS,
+          attributes: ['id', 'name']
+        }
+      ]
+    }
+    ]
+  }
+  ).then(function(result) {
     return res.jsonp(result);
   });
 }

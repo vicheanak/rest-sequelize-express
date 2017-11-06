@@ -51,7 +51,7 @@ exports.getByUser = (req, res) => {
     include: [
     {
       model: models.STORES,
-      attributes: ['id', 'name', 'phone', 'location'],
+      attributes: ['id', 'name', 'phone', 'address'],
       include: [
         {
           model: models.STORE_TYPES,
