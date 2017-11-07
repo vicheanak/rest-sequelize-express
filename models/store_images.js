@@ -2,10 +2,10 @@
 module.exports = (sequelize, DataTypes) => {
   var STORE_IMAGES = sequelize.define('STORE_IMAGES', {
     imageUrl: DataTypes.STRING,
-    uuid: DataTypes.STRING,
     capturedAt: DataTypes.DATE,
     lat: DataTypes.DECIMAL(10,5),
     lng: DataTypes.DECIMAL(10,5),
+    uploaded: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {

@@ -52,12 +52,13 @@ exports.create = function(req, res) {
       var now = moment().format("YYYY-MM-DD HH:mm:ss");
       console.log('BODY ====> ', req.body);
       models.STORE_IMAGES.create({
-        id: uuid(),
-        capturedAt: now,
+        id: req.body.id,
+        capturedAt: req.body.capturedAt,
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
         storeIdStoreImages: req.body.storeIdStoreImages,
         lat: req.body.lat,
-        lng: req.body.lng
+        lng: req.body.lng,
+        uploaded: true
       }).then(function(result) {
         return res.jsonp(result);
       });

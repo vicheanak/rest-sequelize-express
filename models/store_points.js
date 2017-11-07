@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   var STORE_POINTS = sequelize.define('STORE_POINTS', {
     points: DataTypes.INTEGER,
     imageUrl: DataTypes.STRING,
-    uuid: DataTypes.STRING
+    uuid: DataTypes.STRING,
+    uploaded: DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {
