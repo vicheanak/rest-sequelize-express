@@ -88,7 +88,7 @@ exports.create = function(req, res) {
         token: req.body.token,
         role: req.body.role,
         status: req.body.status,
-        regionIdUsers: req.body.regionId
+        regionIdUsers: req.body.regionId ? req.body.regionId : null
       }).then(function(user){
         if (req.body.storeIds){
           var usersStores = [];
@@ -98,7 +98,7 @@ exports.create = function(req, res) {
               storeIdUsersStores: req.body.storeIds[i]
             });
           }
-          models.USERS_STORES.bulkCreate(usersStores).then(() => {
+          models.USERS_STORES.bulkCreate(usersStores, {returning: true}).then(() => {
             return res.jsonp(user);
           });
         }
@@ -115,14 +115,13 @@ exports.update = function(req, res) {
     fullname: req.body.fullname,
     phone: req.body.phone,
     status: req.body.status,
-    regionIdUsers: req.body.regionId
+    regionIdUsers: req.body.regionId ? req.body.regionId : null
   };
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(req.body.password, salt, function (err, hash) {
       if (req.body.password){
         data.password = hash;
       }
-      console.log('data ====> ', data);
       models.USERS.update(
         data
         ,{
@@ -131,7 +130,6 @@ exports.update = function(req, res) {
           }
         }).then(function(user) {
           var routePath = req.route.path;
-          console.log('user ===> ', routePath);
           var role = '';
           if (routePath == '/managers/:id'){
             role = 'manager';

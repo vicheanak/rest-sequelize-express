@@ -122,11 +122,12 @@ exports.update = function(req, res) {
   }
   else{
    models.DISPLAYS.update({
+     sku: req.body.sku,
      name: req.body.name,
      points: req.body.points,
-     status: req.body.status,
      storeTypeIdDisplays: req.body.storeTypeId,
      displayTypeIdDisplays: req.body.displayTypeId,
+     status: req.body.status
    },{
     where: {
       id: req.params.id

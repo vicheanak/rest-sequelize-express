@@ -10,11 +10,14 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER
       },
-      points: {
+      spent_points: {
         type: Sequelize.INTEGER
       },
       imageUrl:{
         type: Sequelize.STRING
+      },
+      claimedAt: {
+        type: Sequelize.DATE
       },
       deliveriedAt: {
         type: Sequelize.DATE

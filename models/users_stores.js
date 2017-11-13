@@ -8,7 +8,13 @@
 // };
 
 module.exports = (sequelize, DataTypes) => {
-  var USERS_STORES = sequelize.define('USERS_STORES', {}, {
+  var USERS_STORES = sequelize.define('USERS_STORES', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    }
+  }, {
     classMethods: {
       associate: function(models) {
         USERS_STORES.belongsTo(models.USERS, {

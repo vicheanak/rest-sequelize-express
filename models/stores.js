@@ -25,9 +25,11 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'regionIdStores'
         });
         STORES.hasMany(models.STORE_POINTS, {
+          as: 'sp',
           foreignKey: 'storeIdStorePoints'
         });
         STORES.hasMany(models.STORES_REWARDS, {
+          as: 'sr',
           foreignKey: 'storeIdStoresRewards'
         });
         STORES.hasMany(models.USERS_STORES, {

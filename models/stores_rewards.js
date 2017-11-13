@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   var STORES_REWARDS = sequelize.define('STORES_REWARDS', {
     status: DataTypes.INTEGER,
     imageUrl: DataTypes.STRING,
-    points: DataTypes.INTEGER,
+    spent_points: DataTypes.INTEGER,
+    claimedAt: DataTypes.DATE,
     deliveriedAt: DataTypes.DATE
   }, {
     classMethods: {
@@ -15,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'rewardIdStoresRewards'
         });
       }
-    }
+    },
   });
   return STORES_REWARDS;
 };

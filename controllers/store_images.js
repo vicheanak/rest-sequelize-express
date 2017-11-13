@@ -41,17 +41,17 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-  var fileName = req.body.fileName;
+  var fileName = req.body.imageUrl;
   var filePath = "/public/uploads/"+fileName;
   var appRootFilePath = appRoot + "/public/uploads/"+fileName;
+  console.log('APP_ROOT_FILEPATH', appRootFilePath);
   sharp(appRootFilePath)
   .resize(500)
   .toBuffer()
   .then((data) =>{
     fs.writeFile(appRootFilePath, data, 'base64', function(err) {
       var now = moment().format("YYYY-MM-DD HH:mm:ss");
-      console.log('BODY ====> ', req.body);
-      models.STORE_IMAGES.create({
+      models.STORE_IMAGES.upsert({
         id: req.body.id,
         capturedAt: req.body.capturedAt,
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
@@ -60,18 +60,19 @@ exports.create = function(req, res) {
         lng: req.body.lng,
         uploaded: true
       }).then(function(result) {
+        console.log('SUCCESS UPSERT');
         return res.jsonp(result);
       });
     });
   })
   .catch((err) => {
-    console.log('error', err);
+    console.log('ERRRRRRR', err);
   });
 
 };
 
 exports.update = function(req, res) {
-  var fileName = req.body.fileName;
+  var fileName = req.body.imageUrl;
   var filePath = "/public/uploads/"+fileName;
   var appRootFilePath = appRoot + "/public/uploads/"+fileName;
   sharp(appRootFilePath)

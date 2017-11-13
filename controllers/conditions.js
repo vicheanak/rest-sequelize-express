@@ -14,7 +14,13 @@ exports.all = (req, res) => {
     include: [
     {
       model: models.DISPLAYS,
-      attributes: ['id', 'name', 'imageUrl', 'points', 'status']
+      attributes: ['id', 'name', 'imageUrl', 'points', 'status'],
+      include: [
+      {
+        model: models.DISPLAY_TYPES,
+        attributes: ['id', 'name']
+      }
+      ]
     }
     ]
   };
@@ -71,7 +77,7 @@ exports.create = function(req, res) {
   models.CONDITIONS.create({
     id: uuid(),
     name: req.body.name,
-    displayIdConditions: req.body.displayId
+    displayIdConditions: req.body.displayIdConditions
   }).then(function(result) {
     return res.jsonp(result);
   });
@@ -80,7 +86,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   models.CONDITIONS.update({
    name: req.body.name,
-   displayIdConditions: req.body.displayId
+   displayIdConditions: req.body.displayIdConditions
  },{
   where: {
     id: req.params.id

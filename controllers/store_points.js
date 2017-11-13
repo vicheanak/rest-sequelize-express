@@ -16,6 +16,7 @@ exports.all = (req, res) => {
     ['createdAt', 'DESC']
     ]
   }).then(function(rec) {
+    console.log('SOTRE POINT ALL', rec);
     var routePath = req.route.path;
     var pageCount = Math.ceil(rec.count / perPage)
     var result = {
@@ -40,29 +41,29 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-
-  var fileName = req.body.fileName;
-
+  var fileName = req.body.imageUrl;
   var filePath = "/public/uploads/"+fileName;
   var appRootFilePath = appRoot + "/public/uploads/"+fileName;
-  console.log('')
   sharp(appRootFilePath)
   .resize(500)
   .toBuffer()
   .then((data) =>{
     fs.writeFile(appRootFilePath, data, 'base64', function(err) {
-      models.STORE_POINTS.create({
+      models.STORE_POINTS.upsert({
+        id: req.body.id,
         points: req.body.points,
-        id: req.body.uuid,
         imageUrl: req.protocol + '://' + req.headers.host + filePath,
-        uploaded: req.body.uploaded,
+        uploaded: true,
         storeIdStorePoints: req.body.storeIdStorePoints,
         userIdStorePoints: req.body.userIdStorePoints,
         displayIdStorePoints: req.body.displayIdStorePoints,
         storeImageIdStorePoints: req.body.storeImageIdStorePoints,
         conditionIdStorePoints: req.body.conditionIdStorePoints
       }).then(function(result) {
+        console.log('SUCCESS STORE POINT', result);
         return res.jsonp(result);
+      }, function(error){
+        console.log('ERROR STORE POINT', error);
       });
     });
   })

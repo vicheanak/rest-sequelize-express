@@ -1,5 +1,9 @@
 var models  = require('../models');
+var fs = require('fs');
+var appRoot = require('app-root-path');
 var uuid = require('uuid/v4');
+var sharp = require('sharp');
+var multer = require('multer');
 
 exports.all = (req, res) => {
   var page = req.query.page ? req.query.page : 1;
@@ -60,22 +64,42 @@ exports.all = (req, res) => {
 };
 
 exports.create = function(req, res) {
-  models.STORES_REWARDS.create({
-    id: uuid(),
+ var fileName = req.body.imageUrl;
+ var filePath = "/public/uploads/"+fileName;
+ var appRootFilePath = appRoot + "/public/uploads/"+fileName;
+ sharp(appRootFilePath)
+ .resize(500)
+ .toBuffer()
+ .then((data) =>{
+  fs.writeFile(appRootFilePath, data, 'base64', function(err) {
+   models.STORES_REWARDS.upsert({
+    id: req.body.id,
     status: req.body.status,
-    points: req.body.points,
-    imageUrl: req.body.imageUrl,
+    spent_points: req.body.spent_points,
+    imageUrl: req.protocol + '://' + req.headers.host + filePath,
+    claimedAt: req.body.claimedAt,
     deliveriedAt: req.body.deliveriedAt,
-    uploaded: req.body.uploaded
+    uploaded: req.body.uploaded,
+    storeIdStoresRewards: req.body.storeIdStoresRewards,
+    rewardIdStoresRewards: req.body.rewardIdStoresRewards,
   }).then(function(result) {
     return res.jsonp(result);
+  }, function(error){
+    return res.jsonp(error);
   });
+});
+})
+ .catch((err) => {
+  console.log('error', err);
+});
+
+
 };
 
 exports.update = function(req, res) {
   models.STORES_REWARDS.update({
    status: req.body.status,
-   points: req.body.points,
+   spent_points: req.body.spent_points,
    imageUrl: req.body.imageUrl,
    deliveriedAt: req.body.deliveriedAt,
    uploaded: req.body.uploaded

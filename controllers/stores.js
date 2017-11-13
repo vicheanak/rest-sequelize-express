@@ -30,38 +30,36 @@ exports.all = (req, res) => {
       status: true
     }
   }
-  models.STORES.findAll(query).then(function(result) {
+
+  models.STORES.findAndCountAll(query).then(function(rec) {
+    var routePath = req.route.path;
+    var pageCount = Math.ceil(rec.count / perPage)
+    var result = {
+      '_metadata': {
+        'page': rec.length,
+        'per_page': perPage,
+        'page_count': pageCount,
+        'total_count': rec.count,
+        'Links': [
+        {'self': routePath+'?page='+page+'&per_page='+perPage},
+        {'first': routePath+'?page=1&per_page='+perPage},
+        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
+        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
+        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
+        ]
+      },
+      'records': rec.rows
+    }
+
     return res.jsonp(result);
   });
-  // models.STORES.findAndCountAll(query).then(function(rec) {
-  //   var routePath = req.route.path;
-  //   var pageCount = Math.ceil(rec.count / perPage)
-  //   var result = {
-  //     '_metadata': {
-  //       'page': rec.length,
-  //       'per_page': perPage,
-  //       'page_count': pageCount,
-  //       'total_count': rec.count,
-  //       'Links': [
-  //       {'self': routePath+'?page='+page+'&per_page='+perPage},
-  //       {'first': routePath+'?page=1&per_page='+perPage},
-  //       {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-  //       {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-  //       {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
-  //       ]
-  //     },
-  //     'records': rec.rows
-  //   }
-
-  //   return res.jsonp(result);
-  // });
 };
 
 exports.create = function(req, res) {
   models.STORES.create({
-    id: req.body.uuid,
+    id: req.body.uuid ? req.body.uuid : uuid(),
     name: req.body.name,
-    location: req.body.location,
+    address: req.body.address,
     phone: req.body.phone,
     status: req.body.status,
     storeTypeIdStores: req.body.storeTypeId,
@@ -79,7 +77,7 @@ exports.update = function(req, res) {
   console.log('lat, lng =======> ', req.body.lat, req.body.lng);
   var data = {
     name: req.body.name,
-    location: req.body.location,
+    address: req.body.address,
     phone: req.body.phone,
     status: req.body.status,
     storeTypeIdStores: req.body.storeTypeId,
@@ -111,66 +109,65 @@ exports.get = function(req, res) {
     return res.jsonp(result);
   });
 }
-
 exports.reports = (req, res) => {
-  var page = req.query.page ? req.query.page : 1;
-  page = parseInt(page) - 1;
-  var perPage = req.query.per_page ? req.query.per_page : 30;
-  var query = {
-    include: [
-    {
-      model: models.STORE_TYPES,
-      attributes: ['id', 'name']
-    },
-    {
-      model: models.REGIONS,
-      attributes: ['id', 'name']
-    },
-    {
-      model: models.STORE_IMAGES
-    }
-    ],
-    attributes: [
-    'id',
-    'name',
-    'phone',
-    'storeTypeIdStores',
-    'regionIdStores'
-    ],
-    offset: page,
-    limit: perPage,
-    orderBy: [
-    ['createdAt', 'DESC']
-    ]
+  models.sequelize.query(`
+    SELECT
+    s.id,
+    s.name,
+    (select SUM(points)
+    from STORE_POINTs
+    where storeIdStorePoints = s.id
+    ) AS total_earned_points,
+    (select SUM(spent_points)
+    from STORES_REWARDS
+    where storeIdStoresRewards = s.id
+    ) AS total_spent_points
+    FROM STORES AS s
+    `).spread((results, metadata) => {
+      console.log(results);
+    })
   };
-  if (req.query.status){
-    query.where = {
-      status: true
-    }
-  }
-  models.STORES.findAndCountAll(query).then(function(rec) {
-    var routePath = req.route.path;
-    var pageCount = Math.ceil(rec.count / perPage)
-    var result = {
-      '_metadata': {
-        'page': rec.length,
-        'per_page': perPage,
-        'page_count': pageCount,
-        'total_count': rec.count,
-        'Links': [
-        {'self': routePath+'?page='+page+'&per_page='+perPage},
-        {'first': routePath+'?page=1&per_page='+perPage},
-        {'previous': routePath+'?page='+(page-1)+'&per_page='+perPage},
-        {'next': routePath+'?page='+(page+1)+'&per_page='+perPage},
-        {'last': routePath+'?page='+pageCount+'&per_page='+perPage},
-        ]
-      },
-      'records': rec.rows
-    }
+// exports.reports = (req, res) => {
+//   var page = req.query.page ? req.query.page : 1;
+//   page = parseInt(page) - 1;
+//   var perPage = req.query.per_page ? req.query.per_page : 30;
+//   var query = {
+//     include: [
+//     {
+//       model: models.STORE_TYPES,
+//       attributes: ['id', 'name']
+//     },
+//     {
+//       model: models.REGIONS,
+//       attributes: ['id', 'name']
+//     },
+//     {
+//       model: models.STORE_POINTS,
+//       as: 'sp',
+//       attributes: ['id', [models.sequelize.fn('sum', models.sequelize.col('points')), 'lossTotal']],
+//     },
+//     {
+//       model: models.STORES_REWARDS,
+//       as: 'sr',
+//       attributes: ['id', [models.sequelize.fn('sum', models.sequelize.col('spent_points')), 'profitTotal']],
+//     }
+//     ],
+//     attributes: [
+//     'id',
+//     'name',
+//     'phone',
+//     'storeTypeIdStores',
+//     'regionIdStores',
+//     ],
+//   };
 
-    return res.jsonp(result);
-  });
-};
+//   models.STORES.findAll(query).then(function(rec) {
+//     rec.getSpentPoints(function(){
+//       console.log('callback');
+//     })
+
+//   });
+// };
 
 exports.isAuth = function(req,res){
   console.log('req params, ', req.params.token);
@@ -194,8 +191,6 @@ exports.authenticate = function(req,res){
   }).then(function(store){
     if (store){
       store.verifyPassword(req.body.password, function(err, isMatch){
-        console.log('isMatch');
-        console.log(isMatch);
         if (isMatch){
           store.updateAttributes({
             token: jwt.encode(uuid.v4(), secret)
